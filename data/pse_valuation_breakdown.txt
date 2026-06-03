@@ -1,0 +1,333 @@
+PSE VALUATION BREAKDOWN
+Generated: 2026-05-31 21:32
+Rf: 7.706%  Tax: 25%  ERP: 6.69%
+
+======================================================================
+  AC — Ayala Corporation
+  Source: Yahoo (AYALY)  |  Fiscal Year: 2025-12-31
+  Sector: Holding Firms  |  Status: OK
+======================================================================
+
+  FCFF COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  EBIT                      "Operating Income" + "Other Non Operating Income Expenses" [Yahoo IS]
+                            PHP    63,992.74M
+  Operating Income          Operating Income               [Yahoo IS]
+                            PHP    58,792.16M
+  + Non-Op Income           Other Non Operating Income Expenses [Yahoo IS]
+                            PHP     5,200.59M
+  D&A                       "Depreciation And Amortization" [Yahoo CF]
+                            PHP    17,942.54M
+  CapEx                     "Capital Expenditure"          [Yahoo CF]
+                            PHP    38,488.48M
+  CA (ΔNWC)                 "Current Assets"               [Yahoo BS]
+                            PHP   599,857.54M
+  - Cash (ΔNWC)             "Cash And Cash Equivalents"    [Yahoo BS]
+                            PHP    66,901.82M
+  - CL total (ΔNWC)         "Current Liabilities"          [Yahoo BS]
+                            PHP   404,757.00M
+    - Current IB debt (excl.) "Current Debt And Capital Lease Obligation" [Yahoo BS]
+                            PHP   131,187.97M
+    - Current IB debt (excl.) "Current Debt"                 [Yahoo BS]
+                            PHP   127,862.42M
+    - Current IB debt (excl.) "Current Capital Lease Obligation" [Yahoo BS]
+                            PHP     3,325.55M
+  ΔNWC = NWC_curr - NWC_prior Computed                       [Yahoo BS]
+                            PHP   -11,354.14M
+  ──────────
+  = FCFF                              PHP    38,802.75M
+  ──────────
+  FCFF Formula: NOPAT + D&A - ΔNWC - CapEx
+    NOPAT  = EBIT × (1 - 25%)  = PHP      47,994.56M
+    + D&A                       = PHP      17,942.54M
+    - ΔNWC                      = PHP     -11,354.14M
+    - CapEx                     = PHP      38,488.48M
+  ► FCFF 2025                   = PHP      38,802.75M
+  ► FCFF 2024                   = PHP      12,369.65M
+  ► FCFF 2023                   = PHP       7,412.96M
+
+  ROIC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Debt (current)                      "Total Debt"              [Yahoo BS]
+                                      PHP   736,136.70M
+  + Book Equity (current)             "Stockholders Equity"     [Yahoo BS]
+                                      PHP   511,662.50M
+  - Cash (current)                    "Cash And Cash Equivalents" [Yahoo BS]
+                                      PHP    66,901.82M
+  = IC current                        Computed                  [Math]
+                                      PHP 1,180,897.38M
+  = IC prior                          Computed                  [Math]
+                                      PHP 1,059,199.00M
+  = Avg IC                            Computed                  [Math]
+                                      PHP 1,120,048.19M
+  = ROIC                              Formula                   [Math]
+                                          4.29%
+  ► ROIC = NOPAT / Avg IC       = 4.29%
+
+  WACC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Ke = Rf + β×ERP                          Rf=7.706% β=0.524 ERP=6.69%
+                                             11.212%
+  Interest Expense                         "Interest Expense"  
+                                           PHP    36,550.79M
+  ICR = EBIT / IntExp                      Computed            
+                                           PHP         1.75M
+  Rating=B1/B+ Spread=2.75%                Damodaran Table     
+                                              2.750%
+  Kd after-tax = (Rf+Spread)×(1-25%)       Formula             
+                                              7.842%
+  Market Cap (E)                           Yahoo/Reuters       
+                                           PHP   533,923.68M
+  Total Debt (D)                           Balance Sheet       
+                                           PHP   736,136.70M
+  E/V=42.0% D/V=58.0%                      Computed            
+  = WACC                                   (E/V×Ke)+(D/V×Kd)   
+                                              9.259%
+  ► WACC                        = 9.259%
+
+======================================================================
+
+======================================================================
+  ACR — Alsons Consolidated Resources, Inc.
+  Source: Reuters (ACR.PS)  |  Fiscal Year: Reuters
+  Sector: Industrial  |  Status: OK
+======================================================================
+
+  FCFF COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  EBIT                      "Operating Income" + "Other, Net" [Reuters IS]
+                            PHP     4,874.37M
+  Operating Income          Operating Income               [Reuters IS]
+                            PHP     4,513.98M
+  + Non-Op Income           Other, Net                     [Reuters IS]
+                            PHP       360.39M
+  D&A                       "Depreciation/Depletion"       [Reuters CF]
+                            PHP     1,536.12M
+  CapEx                     "Capital Expenditures"         [Reuters CF]
+                            PHP     1,450.06M
+  CA (ΔNWC)                 "Total Current Assets"         [Reuters BS]
+                            PHP    11,976.59M
+  - Cash (ΔNWC)             "Cash"                         [Reuters BS]
+                            PHP     1,963.68M
+  - CL total (ΔNWC)         "Total Current Liabilities"    [Reuters BS]
+                            PHP    14,892.05M
+    - Current IB debt (excl.) "Notes Payable/Short Term Debt" [Reuters BS]
+                            PHP     5,410.40M
+    - Current IB debt (excl.) "Current Port. of  LT Debt/Capital Leases" [Reuters BS]
+                            PHP     6,321.52M
+  ΔNWC = NWC_curr - NWC_prior Computed                       [Reuters BS]
+                            PHP     1,270.02M
+  ──────────
+  = FCFF                              PHP     2,471.82M
+  ──────────
+  FCFF Formula: NOPAT + D&A - ΔNWC - CapEx
+    NOPAT  = EBIT × (1 - 25%)  = PHP       3,655.78M
+    + D&A                       = PHP       1,536.12M
+    - ΔNWC                      = PHP       1,270.02M
+    - CapEx                     = PHP       1,450.06M
+  ► FCFF 2025                   = PHP       2,471.82M
+  ► FCFF 2024                   = PHP       2,970.14M
+  ► FCFF 2023                   = PHP       2,377.64M
+
+  ROIC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Debt (current)                      "Total Debt"              [Reuters BS]
+                                      PHP    24,496.11M
+  + Book Equity (current)             "Total Equity"            [Reuters BS]
+                                      PHP    14,351.43M
+  - Cash (current)                    "Cash"                    [Reuters BS]
+                                      PHP     1,963.68M
+  = IC current                        Computed                  [Math]
+                                      PHP    36,883.86M
+  = IC prior                          Computed                  [Math]
+                                      PHP    34,852.14M
+  = Avg IC                            Computed                  [Math]
+                                      PHP    35,868.00M
+  = ROIC                              Formula                   [Math]
+                                         10.19%
+  ► ROIC = NOPAT / Avg IC       = 10.19%
+
+  WACC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Ke = Rf + β×ERP                          Rf=7.706% β=0.14 ERP=6.69%
+                                              8.643%
+  Interest Expense                         "Interest Inc.(Exp.),Net-Non-Op., Total"
+                                           PHP     2,009.62M
+  ICR = EBIT / IntExp                      Computed            
+                                           PHP         2.43M
+  Rating=Ba1/BB+ Spread=1.38%              Damodaran Table     
+                                              1.380%
+  Kd after-tax = (Rf+Spread)×(1-25%)       Formula             
+                                              6.814%
+  Market Cap (E)                           Yahoo/Reuters       
+                                           PHP     4,800.00M
+  Total Debt (D)                           Balance Sheet       
+                                           PHP    24,496.11M
+  E/V=16.4% D/V=83.6%                      Computed            
+  = WACC                                   (E/V×Ke)+(D/V×Kd)   
+                                              7.114%
+  ► WACC                        = 7.114%
+
+======================================================================
+
+======================================================================
+  JFC — Jollibee Foods Corporation
+  Source: Yahoo (JBFCY)  |  Fiscal Year: 2025-12-31
+  Sector: Industrial  |  Status: OK
+======================================================================
+
+  FCFF COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  EBIT                      "Operating Income" + "Other Non Operating Income Expenses" [Yahoo IS]
+                            PHP    21,736.14M
+  Operating Income          Operating Income               [Yahoo IS]
+                            PHP    21,601.61M
+  + Non-Op Income           Other Non Operating Income Expenses [Yahoo IS]
+                            PHP       134.54M
+  D&A                       "Depreciation And Amortization" [Yahoo CF]
+                            PHP    18,779.19M
+  CapEx                     "Capital Expenditure"          [Yahoo CF]
+                            PHP    15,472.31M
+  CA (ΔNWC)                 "Current Assets"               [Yahoo BS]
+                            PHP    74,116.29M
+  - Cash (ΔNWC)             "Cash And Cash Equivalents"    [Yahoo BS]
+                            PHP    34,944.22M
+  - CL total (ΔNWC)         "Current Liabilities"          [Yahoo BS]
+                            PHP    80,594.64M
+    - Current IB debt (excl.) "Current Debt And Capital Lease Obligation" [Yahoo BS]
+                            PHP    26,586.03M
+    - Current IB debt (excl.) "Current Debt"                 [Yahoo BS]
+                            PHP    18,395.39M
+    - Current IB debt (excl.) "Current Capital Lease Obligation" [Yahoo BS]
+                            PHP     8,190.64M
+  ΔNWC = NWC_curr - NWC_prior Computed                       [Yahoo BS]
+                            PHP     6,652.07M
+  ──────────
+  = FCFF                              PHP    12,956.91M
+  ──────────
+  FCFF Formula: NOPAT + D&A - ΔNWC - CapEx
+    NOPAT  = EBIT × (1 - 25%)  = PHP      16,302.11M
+    + D&A                       = PHP      18,779.19M
+    - ΔNWC                      = PHP       6,652.07M
+    - CapEx                     = PHP      15,472.31M
+  ► FCFF 2025                   = PHP      12,956.91M
+  ► FCFF 2024                   = PHP      19,290.19M
+  ► FCFF 2023                   = PHP      17,469.26M
+
+  ROIC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Debt (current)                      "Total Debt"              [Yahoo BS]
+                                      PHP   139,327.08M
+  + Book Equity (current)             "Stockholders Equity"     [Yahoo BS]
+                                      PHP    78,386.95M
+  - Cash (current)                    "Cash And Cash Equivalents" [Yahoo BS]
+                                      PHP    34,944.22M
+  = IC current                        Computed                  [Math]
+                                      PHP   182,769.80M
+  = IC prior                          Computed                  [Math]
+                                      PHP   173,305.79M
+  = Avg IC                            Computed                  [Math]
+                                      PHP   178,037.80M
+  = ROIC                              Formula                   [Math]
+                                          9.16%
+  ► ROIC = NOPAT / Avg IC       = 9.16%
+
+  WACC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Ke = Rf + β×ERP                          Rf=7.706% β=0.466 ERP=6.69%
+                                             10.824%
+  Interest Expense                         "Interest Expense"  
+                                           PHP     7,598.06M
+  ICR = EBIT / IntExp                      Computed            
+                                           PHP         2.86M
+  Rating=Baa2/BBB Spread=1.11%             Damodaran Table     
+                                              1.110%
+  Kd after-tax = (Rf+Spread)×(1-25%)       Formula             
+                                              6.612%
+  Market Cap (E)                           Yahoo/Reuters       
+                                           PHP   151,958.43M
+  Total Debt (D)                           Balance Sheet       
+                                           PHP   139,327.08M
+  E/V=52.2% D/V=47.8%                      Computed            
+  = WACC                                   (E/V×Ke)+(D/V×Kd)   
+                                              8.809%
+  ► WACC                        = 8.809%
+
+======================================================================
+
+======================================================================
+  KEP — Keppel Philippines Properties, Inc.
+  Source: Reuters (KEP.PS)  |  Fiscal Year: Reuters
+  Sector: Property  |  Status: OK
+======================================================================
+
+  FCFF COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  EBIT                      "Operating Income"             [Reuters IS]
+                            PHP        15.71M
+  Operating Income          Operating Income               [Reuters IS]
+                            PHP        15.71M
+  D&A                       "Depreciation/Depletion"       [Reuters CF]
+                            PHP         0.06M
+  CapEx                     "Capital Expenditures"         [Reuters CF]
+                            PHP         0.00M
+  CA (ΔNWC)                 "Total Current Assets"         [Reuters BS]
+                            PHP       565.55M
+  - Cash (ΔNWC)             "Cash"                         [Reuters BS]
+                            PHP         5.83M
+  - CL total (ΔNWC)         "Total Current Liabilities"    [Reuters BS]
+                            PHP       116.56M
+  ΔNWC = NWC_curr - NWC_prior Computed                       [Reuters BS]
+                            PHP       541.12M
+  ──────────
+  = FCFF                              PHP      -529.28M
+  ──────────
+  FCFF Formula: NOPAT + D&A - ΔNWC - CapEx
+    NOPAT  = EBIT × (1 - 25%)  = PHP          11.78M
+    + D&A                       = PHP           0.06M
+    - ΔNWC                      = PHP         541.12M
+    - CapEx                     = PHP           0.00M
+  ► FCFF 2025                   = PHP        -529.28M
+  ► FCFF 2024                   = PHP          55.47M
+  ► FCFF 2023                   = PHP          12.89M
+
+  ROIC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Debt (current)                      "Total Debt"              [Reuters BS]
+                                      PHP         0.00M
+  + Book Equity (current)             "Total Equity"            [Reuters BS]
+                                      PHP       495.45M
+  - Cash (current)                    "Cash"                    [Reuters BS]
+                                      PHP         5.83M
+  = IC current                        Computed                  [Math]
+                                      PHP       489.62M
+  = IC prior                          Computed                  [Math]
+                                      PHP         7.08M
+  = Avg IC                            Computed                  [Math]
+                                      PHP       248.35M
+  = ROIC                              Formula                   [Math]
+                                          4.74%
+  ► ROIC = NOPAT / Avg IC       = 4.74%
+
+  WACC COMPUTATION
+  ────────────────────────────────────────────────────────────────────
+  Ke = Rf + β×ERP                          Rf=7.706% β=-1.59 ERP=6.69%
+                                             -2.931%
+  Interest Expense                         "Interest Inc.(Exp.),Net-Non-Op., Total"
+                                           PHP        29.10M
+  ICR = EBIT / IntExp                      Computed            
+                                           PHP         0.54M
+  Rating=C2/C Spread=16.00%                Damodaran Table     
+                                             16.000%
+  Kd after-tax = (Rf+Spread)×(1-25%)       Formula             
+                                             17.779%
+  Market Cap (E)                           Yahoo/Reuters       
+                                           PHP       793.30M
+  Total Debt (D)                           Balance Sheet       
+                                           PHP         0.00M
+  E/V=100.0% D/V=0.0%                      Computed            
+  = WACC                                   (E/V×Ke)+(D/V×Kd)   
+                                             -2.931%
+  ► WACC                        = -2.931%
+
+======================================================================
