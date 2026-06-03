@@ -1,180 +1,210 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
+import re
 
-# ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="PSE Valuation Dashboard",
+    page_title="PSE Valuation",
     page_icon="🇵🇭",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── Custom CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+* { box-sizing: border-box; }
 
 html, body, [class*="css"] {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, .big-title {
-    font-family: 'Syne', sans-serif !important;
-}
-
-/* Dark background */
 .stApp {
-    background-color: #0a0e1a;
-    color: #e2e8f0;
+    background: #f2f2f7;
+    color: #1c1c1e;
 }
 
 .block-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
+    padding: 2rem 2.5rem 4rem 2.5rem;
+    max-width: 1400px;
 }
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #0d1220;
-    border-right: 1px solid #1e2d4a;
+    background: #ffffff;
+    border-right: 1px solid #e5e5ea;
 }
-
+[data-testid="stSidebar"] .block-container {
+    padding: 2rem 1.5rem;
+}
 [data-testid="stSidebar"] label {
-    color: #94a3b8 !important;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: #8e8e93 !important;
 }
 
-/* Metric cards */
-.metric-card {
-    background: linear-gradient(135deg, #111827 0%, #1a2540 100%);
-    border: 1px solid #1e3a5f;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
+/* Cards */
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.kpi-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.kpi-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #8e8e93;
     margin-bottom: 0.5rem;
 }
 
-.metric-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #64748b;
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 0.3rem;
-}
-
-.metric-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.9rem;
-    font-weight: 800;
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
     line-height: 1;
+    color: #1c1c1e;
 }
 
-.metric-positive { color: #34d399; }
-.metric-negative { color: #f87171; }
-.metric-neutral  { color: #60a5fa; }
-
-/* Value spread badge */
-.spread-positive {
-    display: inline-block;
-    background: #052e16;
-    color: #34d399;
-    border: 1px solid #166534;
-    border-radius: 6px;
-    padding: 2px 10px;
+.kpi-sub {
     font-size: 0.75rem;
-    font-family: 'DM Mono', monospace;
+    font-weight: 500;
     margin-top: 0.4rem;
-}
-.spread-negative {
-    display: inline-block;
-    background: #2d0f0f;
-    color: #f87171;
-    border: 1px solid #7f1d1d;
-    border-radius: 6px;
-    padding: 2px 10px;
-    font-size: 0.75rem;
-    font-family: 'DM Mono', monospace;
-    margin-top: 0.4rem;
+    color: #8e8e93;
 }
 
-/* Section headers */
-.section-header {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #475569;
-    border-bottom: 1px solid #1e2d4a;
-    padding-bottom: 0.5rem;
+.green { color: #34c759; }
+.red   { color: #ff3b30; }
+.blue  { color: #007aff; }
+.gray  { color: #8e8e93; }
+
+.badge-green {
+    display: inline-block;
+    background: #e8fdf0;
+    color: #34c759;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+.badge-red {
+    display: inline-block;
+    background: #fff0ef;
+    color: #ff3b30;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1c1c1e;
     margin: 2rem 0 1rem 0;
 }
 
-/* Company selector */
-.company-pill {
-    display: inline-block;
-    background: #1e3a5f;
-    color: #93c5fd;
-    border-radius: 20px;
-    padding: 3px 12px;
-    font-size: 0.75rem;
-    font-family: 'DM Mono', monospace;
-    margin: 2px;
+.table-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8e8e93;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f2f2f7;
+    margin-bottom: 0.3rem;
 }
 
-/* Rating badge */
-.rating-badge {
-    display: inline-block;
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 4px;
-    padding: 2px 8px;
-    font-size: 0.75rem;
-    font-family: 'DM Mono', monospace;
-    color: #fbbf24;
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #f2f2f7;
+    font-size: 0.88rem;
 }
-
-/* Dataframe styling */
-[data-testid="stDataFrame"] {
-    border: 1px solid #1e2d4a;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* Divider */
-hr {
-    border-color: #1e2d4a !important;
-    margin: 2rem 0;
-}
-
-/* Selectbox & sidebar widgets */
-[data-testid="stSelectbox"] > div > div {
-    background-color: #111827;
-    border: 1px solid #1e3a5f;
-    color: #e2e8f0;
-}
+.detail-row:last-child { border-bottom: none; }
+.detail-key { color: #8e8e93; font-weight: 500; }
+.detail-val { font-weight: 600; color: #1c1c1e; }
 
 .breakdown-box {
-    background: #0d1220;
-    border: 1px solid #1e2d4a;
-    border-radius: 10px;
-    padding: 1.25rem 1.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    color: #94a3b8;
+    background: #1c1c1e;
+    border-radius: 14px;
+    padding: 1.5rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.76rem;
+    color: #a0a0a8;
     white-space: pre-wrap;
-    line-height: 1.7;
-    max-height: 500px;
+    line-height: 1.8;
+    max-height: 520px;
     overflow-y: auto;
 }
+
+/* Override streamlit defaults */
+[data-testid="stDataFrame"] {
+    border-radius: 14px;
+    overflow: hidden;
+    border: none !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+div[data-testid="metric-container"] { display: none; }
+
+.stSelectbox > div > div {
+    background: #f2f2f7;
+    border: none;
+    border-radius: 12px;
+    color: #1c1c1e;
+}
+
+hr { border-color: #e5e5ea !important; }
+
+/* Hide streamlit branding */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Data loading ──────────────────────────────────────────────────────────────
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+def fmt_pct(v):
+    if pd.isna(v): return "—"
+    return f"{v:.2f}%"
+
+def fmt_m(v):
+    if pd.isna(v): return "—"
+    if abs(v) >= 1000:
+        return f"₱{v/1000:,.1f}B"
+    return f"₱{v:,.0f}M"
+
+def fmt_b(v):
+    if pd.isna(v): return "—"
+    return f"₱{v:,.2f}B"
+
+def color_class(v, reverse=False):
+    if pd.isna(v): return "gray"
+    if reverse:
+        return "red" if v > 0 else "green"
+    return "green" if v > 0 else "red"
+
+
+# ── Data ──────────────────────────────────────────────────────────────────────
 @st.cache_data
 def load_data():
     df = pd.read_csv("data/pse_valuation.csv")
@@ -188,303 +218,347 @@ def load_breakdown():
 df = load_data()
 breakdown_text = load_breakdown()
 
-# ── Header ────────────────────────────────────────────────────────────────────
-col_logo, col_title = st.columns([1, 5])
-with col_title:
+# ── Sidebar ───────────────────────────────────────────────────────────────────
+with st.sidebar:
     st.markdown("""
-    <div style='margin-bottom:0.2rem'>
-        <span style='font-family:Syne,sans-serif;font-size:2.2rem;font-weight:800;
-        color:#e2e8f0;letter-spacing:-0.02em;'>PSE Valuation Dashboard</span>
-        <span style='font-family:DM Mono,monospace;font-size:0.8rem;color:#475569;
-        margin-left:1rem;vertical-align:middle;'>🇵🇭 Philippine Stock Exchange</span>
-    </div>
-    <div style='font-family:DM Mono,monospace;font-size:0.75rem;color:#475569;margin-bottom:1rem;'>
-        FCFF · ROIC · WACC &nbsp;|&nbsp; Sources: Yahoo Finance & Reuters &nbsp;|&nbsp;
-        Rf: 7.706% &nbsp;·&nbsp; Tax: 25% &nbsp;·&nbsp; ERP: 6.69%
+    <div style='margin-bottom:2rem;'>
+        <div style='font-size:1.3rem;font-weight:800;letter-spacing:-0.02em;color:#1c1c1e;'>
+            🇵🇭 PSE Valuation
+        </div>
+        <div style='font-size:0.75rem;color:#8e8e93;margin-top:0.2rem;font-weight:500;'>
+            Fundamental Screener
+        </div>
     </div>
     """, unsafe_allow_html=True)
-
-# ── Sidebar filters ───────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("<div style='font-family:Syne,sans-serif;font-size:1.1rem;font-weight:700;"
-                "color:#e2e8f0;margin-bottom:1.5rem;'>FILTERS</div>", unsafe_allow_html=True)
 
     sectors = ["All Sectors"] + sorted(df["sector"].dropna().unique().tolist())
     selected_sector = st.selectbox("Sector", sectors)
 
-    # Filter df for subsector (if you add subsector later, plug it in here)
+    st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
+    show_value_creators = st.toggle("Value creators only (ROIC > WACC)", value=False)
+
+    # Apply filters
+    filtered = df.copy()
     if selected_sector != "All Sectors":
-        filtered_df = df[df["sector"] == selected_sector].copy()
-    else:
-        filtered_df = df.copy()
-
-    st.markdown("---")
-
-    # ROIC vs WACC toggle
-    show_value_creators = st.checkbox("Only show ROIC > WACC", value=False,
-                                      help="Value creators: companies where ROIC exceeds WACC")
+        filtered = filtered[filtered["sector"] == selected_sector]
     if show_value_creators:
-        filtered_df = filtered_df[filtered_df["roic_pct"] > filtered_df["wacc_pct"]]
+        filtered = filtered[
+            filtered["roic_pct"].notna() &
+            filtered["wacc_pct"].notna() &
+            (filtered["roic_pct"] > filtered["wacc_pct"])
+        ]
 
-    st.markdown("---")
-    st.markdown(f"<div style='font-size:0.7rem;color:#475569;font-family:DM Mono,monospace;'>"
-                f"Showing <b style='color:#60a5fa'>{len(filtered_df)}</b> of "
-                f"<b style='color:#60a5fa'>{len(df)}</b> companies</div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top:2rem;'></div>", unsafe_allow_html=True)
+    total = len(df)
+    shown = len(filtered)
+    has_data = filtered["roic_pct"].notna().sum()
 
-# ── OVERVIEW TABLE ────────────────────────────────────────────────────────────
-st.markdown("<div class='section-header'>ALL COMPANIES</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style='background:#f2f2f7;border-radius:14px;padding:1rem;'>
+        <div style='font-size:0.7rem;font-weight:600;text-transform:uppercase;
+        letter-spacing:0.06em;color:#8e8e93;margin-bottom:0.8rem;'>Summary</div>
+        <div style='display:flex;justify-content:space-between;margin-bottom:0.5rem;'>
+            <span style='font-size:0.85rem;color:#8e8e93;'>Showing</span>
+            <span style='font-size:0.85rem;font-weight:700;color:#1c1c1e;'>{shown} of {total}</span>
+        </div>
+        <div style='display:flex;justify-content:space-between;'>
+            <span style='font-size:0.85rem;color:#8e8e93;'>With full data</span>
+            <span style='font-size:0.85rem;font-weight:700;color:#007aff;'>{has_data}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-display_df = filtered_df[[
-    "symbol", "company", "sector", "source",
+
+# ── Header ────────────────────────────────────────────────────────────────────
+st.markdown("""
+<div style='margin-bottom:1.5rem;'>
+    <div style='font-size:2rem;font-weight:800;letter-spacing:-0.03em;color:#1c1c1e;'>
+        PSE Valuation Dashboard
+    </div>
+    <div style='font-size:0.88rem;color:#8e8e93;margin-top:0.3rem;font-weight:500;'>
+        FCFF · ROIC · WACC &nbsp;·&nbsp; Yahoo Finance & Reuters &nbsp;·&nbsp;
+        Rf 7.706% &nbsp;·&nbsp; Tax 25% &nbsp;·&nbsp; ERP 6.69%
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
+# ── Summary KPIs ──────────────────────────────────────────────────────────────
+valid = filtered[filtered["roic_pct"].notna() & filtered["wacc_pct"].notna()]
+value_creators = (valid["roic_pct"] > valid["wacc_pct"]).sum()
+avg_roic = valid["roic_pct"].mean()
+avg_wacc = valid["wacc_pct"].mean()
+avg_spread = avg_roic - avg_wacc if not pd.isna(avg_roic) else None
+
+k1, k2, k3, k4 = st.columns(4)
+
+with k1:
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Companies</div>
+        <div class='kpi-value'>{shown}</div>
+        <div class='kpi-sub'>{selected_sector}</div>
+    </div>""", unsafe_allow_html=True)
+
+with k2:
+    vc_pct = f"{value_creators/len(valid)*100:.0f}%" if len(valid) > 0 else "—"
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Value Creators</div>
+        <div class='kpi-value green'>{value_creators}</div>
+        <div class='kpi-sub'>{vc_pct} of companies with data</div>
+    </div>""", unsafe_allow_html=True)
+
+with k3:
+    roic_color = color_class(avg_spread)
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Avg ROIC</div>
+        <div class='kpi-value {roic_color}'>{fmt_pct(avg_roic)}</div>
+        <div class='kpi-sub'>vs WACC {fmt_pct(avg_wacc)}</div>
+    </div>""", unsafe_allow_html=True)
+
+with k4:
+    spread_color = color_class(avg_spread)
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Avg ROIC − WACC</div>
+        <div class='kpi-value {spread_color}'>{(f"+{avg_spread:.2f}%" if avg_spread and avg_spread > 0 else fmt_pct(avg_spread))}</div>
+        <div class='kpi-sub'>Economic value spread</div>
+    </div>""", unsafe_allow_html=True)
+
+st.markdown("<div style='margin-top:0.5rem;'></div>", unsafe_allow_html=True)
+
+# ── Company Table ─────────────────────────────────────────────────────────────
+st.markdown("<div class='section-title'>All Companies</div>", unsafe_allow_html=True)
+
+table_df = filtered[[
+    "symbol", "company", "sector",
     "fcff_2025_m", "fcff_2024_m", "fcff_2023_m",
-    "roic_pct", "wacc_pct", "rating", "beta", "market_cap_b"
+    "roic_pct", "wacc_pct", "rating", "market_cap_b"
 ]].copy()
 
-display_df["ROIC>WACC"] = display_df["roic_pct"] > display_df["wacc_pct"]
-display_df["Spread (ROIC-WACC)"] = display_df["roic_pct"] - display_df["wacc_pct"]
+table_df["Spread"] = table_df["roic_pct"] - table_df["wacc_pct"]
 
-display_df = display_df.rename(columns={
+table_df = table_df.rename(columns={
     "symbol": "Ticker",
     "company": "Company",
     "sector": "Sector",
-    "source": "Source",
     "fcff_2025_m": "FCFF 2025 (₱M)",
     "fcff_2024_m": "FCFF 2024 (₱M)",
     "fcff_2023_m": "FCFF 2023 (₱M)",
-    "roic_pct": "ROIC (%)",
-    "wacc_pct": "WACC (%)",
+    "roic_pct": "ROIC",
+    "wacc_pct": "WACC",
     "rating": "Rating",
-    "beta": "Beta",
     "market_cap_b": "Mkt Cap (₱B)",
 })
 
-st.dataframe(
-    display_df.style
-    .format({
-        "FCFF 2025 (₱M)": "{:,.1f}",
-        "FCFF 2024 (₱M)": "{:,.1f}",
-        "FCFF 2023 (₱M)": "{:,.1f}",
-        "ROIC (%)": "{:.2f}%",
-        "WACC (%)": "{:.2f}%",
-        "Spread (ROIC-WACC)": "{:+.2f}%",
-        "Beta": "{:.3f}",
-        "Mkt Cap (₱B)": "{:,.3f}",
-    })
-    .map(lambda v: "color: #34d399" if isinstance(v, bool) and v else
-              ("color: #f87171" if isinstance(v, bool) else ""), subset=["ROIC>WACC"])
-    .map(lambda v: "color: #34d399" if isinstance(v, float) and v > 0 else
-              ("color: #f87171" if isinstance(v, float) and v < 0 else ""), subset=["Spread (ROIC-WACC)"]),
-    use_container_width=True,
-    height=320,
-)
-
-# ── CHARTS ROW ────────────────────────────────────────────────────────────────
-st.markdown("<div class='section-header'>ROIC vs WACC COMPARISON</div>", unsafe_allow_html=True)
-
-chart_col1, chart_col2 = st.columns(2)
-
-with chart_col1:
-    # ROIC vs WACC grouped bar
-    bar_data = filtered_df.sort_values("roic_pct", ascending=False)
-    fig_bar = go.Figure()
-    fig_bar.add_trace(go.Bar(
-        name="ROIC", x=bar_data["symbol"], y=bar_data["roic_pct"],
-        marker_color="#34d399", opacity=0.85,
-    ))
-    fig_bar.add_trace(go.Bar(
-        name="WACC", x=bar_data["symbol"], y=bar_data["wacc_pct"],
-        marker_color="#f87171", opacity=0.85,
-    ))
-    fig_bar.update_layout(
-        barmode="group", paper_bgcolor="#0a0e1a", plot_bgcolor="#0a0e1a",
-        font=dict(family="DM Mono, monospace", color="#94a3b8", size=11),
-        legend=dict(orientation="h", y=1.1, font=dict(size=10)),
-        margin=dict(l=10, r=10, t=30, b=10),
-        yaxis=dict(ticksuffix="%", gridcolor="#1e2d4a"),
-        xaxis=dict(gridcolor="#1e2d4a"),
-        height=320,
+def style_table(df):
+    return df.style.format({
+        "FCFF 2025 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
+        "FCFF 2024 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
+        "FCFF 2023 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
+        "ROIC": lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
+        "WACC": lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
+        "Spread": lambda v: f"{v:+.2f}%" if pd.notna(v) else "—",
+        "Mkt Cap (₱B)": lambda v: f"{v:,.3f}" if pd.notna(v) else "—",
+    }).map(
+        lambda v: "color: #34c759; font-weight:600" if isinstance(v, float) and not pd.isna(v) and v > 0
+        else ("color: #ff3b30; font-weight:600" if isinstance(v, float) and not pd.isna(v) and v < 0 else ""),
+        subset=["Spread"]
     )
-    st.plotly_chart(fig_bar, use_container_width=True)
 
-with chart_col2:
-    # 3-year FCFF trend lines
-    fcff_cols = ["fcff_2023_m", "fcff_2024_m", "fcff_2025_m"]
-    years = [2023, 2024, 2025]
-    fig_fcff = go.Figure()
-    colors = ["#60a5fa", "#34d399", "#fbbf24", "#f472b6", "#a78bfa",
-              "#fb923c", "#2dd4bf", "#e879f9"]
-    for i, row in filtered_df.iterrows():
-        color = colors[i % len(colors)]
-        fig_fcff.add_trace(go.Scatter(
-            x=years, y=[row["fcff_2023_m"], row["fcff_2024_m"], row["fcff_2025_m"]],
-            mode="lines+markers", name=row["symbol"],
-            line=dict(color=color, width=2),
-            marker=dict(size=6, color=color),
-        ))
-    fig_fcff.update_layout(
-        title=dict(text="3-Year FCFF Trend (₱M)", font=dict(size=12, color="#94a3b8")),
-        paper_bgcolor="#0a0e1a", plot_bgcolor="#0a0e1a",
-        font=dict(family="DM Mono, monospace", color="#94a3b8", size=11),
-        legend=dict(orientation="h", y=1.15, font=dict(size=10)),
-        margin=dict(l=10, r=10, t=50, b=10),
-        yaxis=dict(gridcolor="#1e2d4a", tickformat=",.0f"),
-        xaxis=dict(gridcolor="#1e2d4a", tickvals=years),
-        height=320,
-    )
-    st.plotly_chart(fig_fcff, use_container_width=True)
+st.dataframe(style_table(table_df), use_container_width=True, height=380)
 
-# ── COMPANY DEEP DIVE ─────────────────────────────────────────────────────────
-st.markdown("<div class='section-header'>COMPANY DEEP DIVE</div>", unsafe_allow_html=True)
+# ── Company Deep Dive ─────────────────────────────────────────────────────────
+st.markdown("<div class='section-title'>Company Deep Dive</div>", unsafe_allow_html=True)
 
-ticker_options = filtered_df["symbol"].tolist()
+ticker_list = filtered["symbol"].tolist()
 selected_ticker = st.selectbox(
-    "Select company",
-    ticker_options,
-    format_func=lambda t: f"{t} — {df[df['symbol']==t]['company'].values[0]}"
+    "Select a company",
+    ticker_list,
+    format_func=lambda t: f"{t}  —  {df[df['symbol']==t]['company'].values[0]}"
 )
 
-company = filtered_df[filtered_df["symbol"] == selected_ticker].iloc[0]
-spread = company["roic_pct"] - company["wacc_pct"]
+row = filtered[filtered["symbol"] == selected_ticker].iloc[0]
+spread_val = (row["roic_pct"] - row["wacc_pct"]) if pd.notna(row["roic_pct"]) and pd.notna(row["wacc_pct"]) else None
+is_creator = spread_val is not None and spread_val > 0
 
-# KPI cards
-kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+# KPI row
+c1, c2, c3, c4 = st.columns(4)
 
-with kpi1:
-    fcff_color = "metric-positive" if company["fcff_2025_m"] > 0 else "metric-negative"
+with c1:
+    fcff_color = "green" if pd.notna(row["fcff_2025_m"]) and row["fcff_2025_m"] > 0 else "red"
     st.markdown(f"""
-    <div class='metric-card'>
-        <div class='metric-label'>FCFF 2025</div>
-        <div class='metric-value {fcff_color}'>₱{company['fcff_2025_m']:,.0f}M</div>
+    <div class='kpi-card'>
+        <div class='kpi-label'>FCFF 2025</div>
+        <div class='kpi-value {fcff_color}'>{fmt_m(row["fcff_2025_m"])}</div>
+        <div class='kpi-sub'>{row["sector"]}</div>
     </div>""", unsafe_allow_html=True)
 
-with kpi2:
-    roic_color = "metric-positive" if company["roic_pct"] > company["wacc_pct"] else "metric-negative"
+with c2:
+    roic_c = color_class(spread_val)
     st.markdown(f"""
-    <div class='metric-card'>
-        <div class='metric-label'>ROIC</div>
-        <div class='metric-value {roic_color}'>{company['roic_pct']:.2f}%</div>
+    <div class='kpi-card'>
+        <div class='kpi-label'>ROIC</div>
+        <div class='kpi-value {roic_c}'>{fmt_pct(row["roic_pct"])}</div>
+        <div class='kpi-sub'>Return on Invested Capital</div>
     </div>""", unsafe_allow_html=True)
 
-with kpi3:
+with c3:
     st.markdown(f"""
-    <div class='metric-card'>
-        <div class='metric-label'>WACC</div>
-        <div class='metric-value metric-neutral'>{company['wacc_pct']:.2f}%</div>
+    <div class='kpi-card'>
+        <div class='kpi-label'>WACC</div>
+        <div class='kpi-value blue'>{fmt_pct(row["wacc_pct"])}</div>
+        <div class='kpi-sub'>Cost of Capital</div>
     </div>""", unsafe_allow_html=True)
 
-with kpi4:
-    spread_color = "metric-positive" if spread > 0 else "metric-negative"
-    spread_label = "Value Creator ✓" if spread > 0 else "Value Destroyer ✗"
+with c4:
+    sp_color = color_class(spread_val)
+    badge = f"<span class='badge-{'green' if is_creator else 'red'}'>{'Value Creator ✓' if is_creator else 'Value Destroyer ✗'}</span>"
+    sp_str = f"{spread_val:+.2f}%" if spread_val is not None else "—"
     st.markdown(f"""
-    <div class='metric-card'>
-        <div class='metric-label'>ROIC − WACC Spread</div>
-        <div class='metric-value {spread_color}'>{spread:+.2f}%</div>
-        <div style='font-size:0.72rem;color:{"#34d399" if spread>0 else "#f87171"};
-        font-family:DM Mono,monospace;margin-top:0.3rem;'>{spread_label}</div>
+    <div class='kpi-card'>
+        <div class='kpi-label'>ROIC − WACC</div>
+        <div class='kpi-value {sp_color}'>{sp_str}</div>
+        <div class='kpi-sub' style='margin-top:0.5rem;'>{badge}</div>
     </div>""", unsafe_allow_html=True)
 
-# Company detail row
-det1, det2 = st.columns(2)
+st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
 
-with det1:
-    # WACC build-up
+left, right = st.columns([1, 1])
+
+with left:
+    # WACC breakdown table
     st.markdown(f"""
-    <div class='metric-card' style='margin-top:0.5rem;'>
-        <div class='metric-label' style='margin-bottom:0.8rem;'>WACC Components</div>
-        <table style='width:100%;font-family:DM Mono,monospace;font-size:0.78rem;
-        color:#94a3b8;border-collapse:collapse;'>
-            <tr><td style='padding:3px 0;'>Risk-Free Rate (Rf)</td>
-                <td style='text-align:right;color:#e2e8f0;'>{company['rf_pct']:.3f}%</td></tr>
-            <tr><td style='padding:3px 0;'>Beta (β)</td>
-                <td style='text-align:right;color:#e2e8f0;'>{company['beta']:.3f}</td></tr>
-            <tr><td style='padding:3px 0;'>ERP</td>
-                <td style='text-align:right;color:#e2e8f0;'>{company['erp_pct']:.3f}%</td></tr>
-            <tr><td style='padding:3px 0;'>Ke (Cost of Equity)</td>
-                <td style='text-align:right;color:#60a5fa;'>{company['ke_pct']:.3f}%</td></tr>
-            <tr style='border-top:1px solid #1e2d4a;'>
-                <td style='padding:5px 0 3px;'>Credit Rating</td>
-                <td style='text-align:right;color:#fbbf24;'>{company['rating']}</td></tr>
-            <tr><td style='padding:3px 0;'>Spread</td>
-                <td style='text-align:right;color:#e2e8f0;'>{company['spread_pct']:.3f}%</td></tr>
-            <tr><td style='padding:3px 0;'>Kd after-tax</td>
-                <td style='text-align:right;color:#f87171;'>{company['kd_aftertax_pct']:.3f}%</td></tr>
-            <tr style='border-top:1px solid #1e2d4a;'>
-                <td style='padding:5px 0 3px;'>E/V weight</td>
-                <td style='text-align:right;color:#e2e8f0;'>{company['equity_weight_pct']:.1f}%</td></tr>
-            <tr><td style='padding:3px 0;'>D/V weight</td>
-                <td style='text-align:right;color:#e2e8f0;'>{company['debt_weight_pct']:.1f}%</td></tr>
-            <tr style='border-top:1px solid #334155;font-weight:bold;'>
-                <td style='padding:6px 0 3px;color:#e2e8f0;'>WACC</td>
-                <td style='text-align:right;color:#60a5fa;font-size:1rem;'>{company['wacc_pct']:.3f}%</td></tr>
-        </table>
-    </div>""", unsafe_allow_html=True)
+    <div class='card'>
+        <div style='font-size:1rem;font-weight:700;color:#1c1c1e;margin-bottom:1rem;letter-spacing:-0.01em;'>
+            WACC Components
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Risk-Free Rate (Rf)</span>
+            <span class='detail-val'>{fmt_pct(row["rf_pct"])}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Beta (β)</span>
+            <span class='detail-val'>{f"{row['beta']:.3f}" if pd.notna(row["beta"]) else "—"}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Equity Risk Premium</span>
+            <span class='detail-val'>{fmt_pct(row["erp_pct"])}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Cost of Equity (Ke)</span>
+            <span class='detail-val' style='color:#007aff;'>{fmt_pct(row["ke_pct"])}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Credit Rating</span>
+            <span class='detail-val'>{row["rating"] if pd.notna(row["rating"]) else "—"}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Spread</span>
+            <span class='detail-val'>{fmt_pct(row["spread_pct"])}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Kd after-tax</span>
+            <span class='detail-val'>{fmt_pct(row["kd_aftertax_pct"])}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Equity Weight (E/V)</span>
+            <span class='detail-val'>{fmt_pct(row["equity_weight_pct"])}</span>
+        </div>
+        <div class='detail-row'>
+            <span class='detail-key'>Debt Weight (D/V)</span>
+            <span class='detail-val'>{fmt_pct(row["debt_weight_pct"])}</span>
+        </div>
+        <div class='detail-row' style='border-top:2px solid #e5e5ea;margin-top:0.3rem;padding-top:0.8rem;'>
+            <span style='font-weight:700;color:#1c1c1e;'>WACC</span>
+            <span style='font-weight:800;font-size:1.1rem;color:#007aff;'>{fmt_pct(row["wacc_pct"])}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-with det2:
-    # FCFF 3-year chart for selected company
-    fig_single = go.Figure()
-    fcff_vals = [company["fcff_2023_m"], company["fcff_2024_m"], company["fcff_2025_m"]]
-    bar_colors = ["#34d399" if v > 0 else "#f87171" for v in fcff_vals]
-    fig_single.add_trace(go.Bar(
-        x=[2023, 2024, 2025], y=fcff_vals,
-        marker_color=bar_colors, text=[f"₱{v:,.0f}M" for v in fcff_vals],
-        textposition="outside", textfont=dict(size=10, color="#94a3b8"),
+with right:
+    # 3-year FCFF chart
+    years = [2023, 2024, 2025]
+    fcff_vals = [row["fcff_2023_m"], row["fcff_2024_m"], row["fcff_2025_m"]]
+    bar_colors = ["#34c759" if v > 0 else "#ff3b30" for v in fcff_vals]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=years, y=fcff_vals,
+        marker_color=bar_colors,
+        marker_line_width=0,
+        text=[fmt_m(v) for v in fcff_vals],
+        textposition="outside",
+        textfont=dict(size=11, color="#1c1c1e", family="Manrope"),
+        width=0.45,
     ))
-    fig_single.add_hline(y=0, line_dash="dot", line_color="#475569")
-    fig_single.update_layout(
-        title=dict(text=f"{selected_ticker} — 3-Year FCFF (₱M)",
-                   font=dict(size=12, color="#94a3b8")),
-        paper_bgcolor="#111827", plot_bgcolor="#111827",
-        font=dict(family="DM Mono, monospace", color="#94a3b8", size=11),
+    fig.add_hline(y=0, line_color="#e5e5ea", line_width=1)
+    fig.update_layout(
+        title=dict(text=f"{selected_ticker} — 3-Year FCFF",
+                   font=dict(size=13, color="#1c1c1e", family="Manrope"), x=0),
+        paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
+        font=dict(family="Manrope", color="#8e8e93", size=11),
         margin=dict(l=10, r=10, t=50, b=10),
-        yaxis=dict(gridcolor="#1e2d4a", tickformat=",.0f"),
-        xaxis=dict(tickvals=[2023, 2024, 2025]),
-        showlegend=False, height=290,
+        yaxis=dict(gridcolor="#f2f2f7", tickformat=",.0f", zeroline=False,
+                   showgrid=True, tickfont=dict(size=10)),
+        xaxis=dict(tickvals=years, tickfont=dict(size=11, color="#1c1c1e")),
+        showlegend=False, height=220,
     )
-    st.plotly_chart(fig_single, use_container_width=True)
+    st.markdown("<div class='card' style='padding:1rem;'>", unsafe_allow_html=True)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ROIC vs WACC gauge-style bar
-    fig_gauge = go.Figure()
-    fig_gauge.add_trace(go.Bar(
-        x=["ROIC", "WACC"], y=[company["roic_pct"], company["wacc_pct"]],
-        marker_color=["#34d399" if company["roic_pct"] > company["wacc_pct"] else "#f87171", "#f87171"],
-        text=[f"{company['roic_pct']:.2f}%", f"{company['wacc_pct']:.2f}%"],
-        textposition="outside", textfont=dict(size=12, color="#e2e8f0"),
-        width=0.4,
+    # ROIC vs WACC
+    fig2 = go.Figure()
+    roic_v = row["roic_pct"] if pd.notna(row["roic_pct"]) else 0
+    wacc_v = row["wacc_pct"] if pd.notna(row["wacc_pct"]) else 0
+    fig2.add_trace(go.Bar(
+        x=["ROIC", "WACC"],
+        y=[roic_v, wacc_v],
+        marker_color=["#34c759" if roic_v > wacc_v else "#ff3b30", "#007aff"],
+        marker_line_width=0,
+        text=[fmt_pct(roic_v), fmt_pct(wacc_v)],
+        textposition="outside",
+        textfont=dict(size=12, color="#1c1c1e", family="Manrope"),
+        width=0.35,
     ))
-    fig_gauge.update_layout(
-        paper_bgcolor="#111827", plot_bgcolor="#111827",
-        font=dict(family="DM Mono, monospace", color="#94a3b8", size=11),
+    fig2.update_layout(
+        paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
+        font=dict(family="Manrope", color="#8e8e93", size=11),
         margin=dict(l=10, r=10, t=10, b=10),
-        yaxis=dict(gridcolor="#1e2d4a", ticksuffix="%"),
+        yaxis=dict(gridcolor="#f2f2f7", ticksuffix="%", zeroline=False,
+                   tickfont=dict(size=10)),
+        xaxis=dict(tickfont=dict(size=12, color="#1c1c1e", family="Manrope")),
         showlegend=False, height=180,
     )
-    st.plotly_chart(fig_gauge, use_container_width=True)
+    st.markdown("<div class='card' style='padding:1rem;margin-top:-0.5rem;'>", unsafe_allow_html=True)
+    st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
+    st.markdown("</div>", unsafe_allow_html=True)
 
-# ── COMPUTATION BREAKDOWN ─────────────────────────────────────────────────────
-with st.expander("📋 View Full Computation Breakdown", expanded=False):
-    # Extract the section for the selected company
-    import re
-    pattern = rf"={{{5,}}}\s+{re.escape(selected_ticker)} —.*?={{{5,}}}"
-    sections = re.split(r"(?=={5,}\s+\w+ —)", breakdown_text)
+# ── Computation Breakdown ─────────────────────────────────────────────────────
+with st.expander("View Full Computation Breakdown", expanded=False):
+    sections = breakdown_text.split("=" * 70)
     company_section = ""
     for section in sections:
-        if section.strip().startswith("=" * 5) and f"  {selected_ticker} —" in section:
-            company_section = section.strip()
+        if f"  {selected_ticker} —" in section:
+            company_section = ("=" * 70 + section).strip()
             break
 
     if company_section:
         st.markdown(f"<div class='breakdown-box'>{company_section}</div>",
                     unsafe_allow_html=True)
     else:
-        st.text(breakdown_text)
+        st.info("Breakdown not available for this company.")
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown("""
-<div style='font-family:DM Mono,monospace;font-size:0.7rem;color:#334155;text-align:center;'>
-    PSE Valuation Dashboard &nbsp;·&nbsp; Data from Yahoo Finance & Reuters &nbsp;·&nbsp;
+<div style='text-align:center;font-size:0.75rem;color:#8e8e93;font-weight:500;'>
+    PSE Valuation Dashboard &nbsp;·&nbsp;
     FCFF = NOPAT + D&A − ΔNWC − CapEx &nbsp;·&nbsp;
     ROIC = NOPAT / Avg IC &nbsp;·&nbsp;
-    WACC = (E/V)×Ke + (D/V)×Kd(1−t)
+    WACC = (E/V)Ke + (D/V)Kd(1−t)
 </div>
 """, unsafe_allow_html=True)
