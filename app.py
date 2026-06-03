@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import re as _re
 
 st.set_page_config(
-    page_title="PSE Valuation",
+    page_title="PSE-listed Companies Valuation",
     page_icon="🇵🇭",
     layout="wide",
     initial_sidebar_state="collapsed",
