@@ -506,81 +506,48 @@ else:
     if st.button("← Back to Dashboard"):
         st.session_state["page"] = "Dashboard"
         st.rerun()
-    st.markdown("""
-    <div class="about-wrap">
-        <div class="about-h1">About This Project</div>
-        <div class="about-lead">A free, open-access fundamental valuation dashboard for Philippine Stock Exchange-listed companies. Built for the everyday Filipino investor.</div>
+    st.markdown("<div class='about-wrap'>", unsafe_allow_html=True)
+    st.markdown("<div class='about-h1'>About This Project</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-lead'>A free, open-access fundamental valuation dashboard for Philippine Stock Exchange-listed companies. Built for the everyday Filipino investor.</div>", unsafe_allow_html=True)
 
-        <div class="about-section">
-            <div class="about-h2">Why This Exists</div>
-            <div class="about-p">Only 2% of Filipinos, or possibly less, invest in the stock market. For a country of 115 million people, that reach is strikingly narrow, and it points to something more than just a lack of interest.</div>
-            <div class="about-p">One of the biggest barriers is data. Fundamental financial data, the kind that serious investors use to evaluate whether a company is actually creating value, exists, but it is fragmented, paywalled, or buried in dense annual reports. Subscribing to a financial data terminal costs more per month than many Filipinos earn in a week. For someone who wants to invest P5,000, paying P3,000 for data defeats the purpose.</div>
-            <div class="about-p">This dashboard was built to change that. Every metric here, FCFF, ROIC, and WACC, is computed from publicly available sources and made available for free.</div>
-            <div class="about-p">This is a personal contribution to financial inclusion, the belief that the tools of fundamental analysis should not be reserved for institutions and professionals. They belong to every Filipino who wants to build long-term wealth.</div>
-            <div class="about-p">This is a work in progress. The methodology, coverage, and presentation will continue to improve over time as more data becomes available and the framework is refined.</div>
-        </div>
+    st.markdown("<div class='about-h2'>Why This Exists</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>Only 2% of Filipinos, or possibly less, invest in the stock market. For a country of 115 million people, that reach is strikingly narrow, and it points to something more than just a lack of interest.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>One of the biggest barriers is data. Fundamental financial data, the kind that serious investors use to evaluate whether a company is actually creating value, exists, but it is fragmented, paywalled, or buried in dense annual reports. Subscribing to a financial data terminal costs more per month than many Filipinos earn in a week. For someone who wants to invest P5,000, paying P3,000 for data defeats the purpose.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>This dashboard was built to change that. Every metric here, FCFF, ROIC, and WACC, is computed from publicly available sources and made available for free.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>This is a personal contribution to financial inclusion, the belief that the tools of fundamental analysis should not be reserved for institutions and professionals. They belong to every Filipino who wants to build long-term wealth.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>This is a work in progress. The methodology, coverage, and presentation will continue to improve over time as more data becomes available and the framework is refined.</div>", unsafe_allow_html=True)
 
-        <div class="about-section">
-            <div class="about-h2">FCFF — Free Cash Flow to the Firm</div>
-            <div class="about-p">FCFF measures how much real cash a company generates from its operations after accounting for the investments needed to sustain and grow the business. Unlike reported earnings, FCFF is harder to distort through accounting choices.</div>
-            <div class="about-formula">FCFF = NOPAT + D&A - Change in NWC - CapEx</div>
-            <ul class="about-ul">
-                <li><b>NOPAT</b> = EBIT x (1 - Tax Rate), operating profit after tax, before financing costs</li>
-                <li><b>D&A</b> = Depreciation and Amortization, a non-cash charge added back</li>
-                <li><b>Change in NWC</b> = Change in Net Working Capital, cash tied up or released by operations</li>
-                <li><b>CapEx</b> = Capital Expenditures, cash spent on maintaining and growing assets</li>
-            </ul>
-            <div class="about-p">Three years of FCFF are shown (2023, 2024, 2025) to reveal the trend, not just a snapshot.</div>
-        </div>
+    st.markdown("<div class='about-h2'>FCFF — Free Cash Flow to the Firm</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>FCFF measures how much real cash a company generates from its operations after accounting for the investments needed to sustain and grow the business. Unlike reported earnings, FCFF is harder to distort through accounting choices.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-formula'>FCFF = NOPAT + D&A - Change in NWC - CapEx</div>", unsafe_allow_html=True)
+    st.markdown("<ul class='about-ul'><li><b>NOPAT</b> = EBIT x (1 - Tax Rate), operating profit after tax, before financing costs</li><li><b>D&A</b> = Depreciation and Amortization, a non-cash charge added back</li><li><b>Change in NWC</b> = Change in Net Working Capital, cash tied up or released by operations</li><li><b>CapEx</b> = Capital Expenditures, cash spent on maintaining and growing assets</li></ul>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>Three years of FCFF are shown (2023, 2024, 2025) to reveal the trend, not just a snapshot.</div>", unsafe_allow_html=True)
 
-        <div class="about-section">
-            <div class="about-h2">ROIC — Return on Invested Capital</div>
-            <div class="about-p">ROIC answers one fundamental question: for every peso of capital entrusted to this company, how much annual operating profit does it generate?</div>
-            <div class="about-formula">ROIC = NOPAT / Average Invested Capital</div>
-            <div class="about-p">Where Invested Capital = Total Debt + Book Equity - Cash</div>
-            <div class="about-p">A ROIC of 12% means the company generates P12 of annual operating profit for every P100 of capital deployed. Its power comes when compared to WACC.</div>
-        </div>
+    st.markdown("<div class='about-h2'>ROIC — Return on Invested Capital</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>ROIC answers one fundamental question: for every peso of capital entrusted to this company, how much annual operating profit does it generate?</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-formula'>ROIC = NOPAT / Average Invested Capital</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>Where Invested Capital = Total Debt + Book Equity - Cash</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>A ROIC of 12% means the company generates P12 of annual operating profit for every P100 of capital deployed. Its power comes when compared to WACC.</div>", unsafe_allow_html=True)
 
-        <div class="about-section">
-            <div class="about-h2">WACC — Weighted Average Cost of Capital</div>
-            <div class="about-p">WACC is the minimum annual return a company must earn to satisfy both its shareholders and its lenders.</div>
-            <div class="about-formula">WACC = (E/V) x Ke + (D/V) x Kd x (1 - Tax Rate)</div>
-            <ul class="about-ul">
-                <li><b>Ke</b> = Cost of Equity: Rf + Beta x ERP</li>
-                <li><b>Kd</b> = Cost of Debt from Damodaran's synthetic rating table</li>
-                <li><b>Rf</b> = 7.706%, 25-year BVAL rate from Bureau of the Treasury</li>
-                <li><b>ERP</b> = 6.69%, Philippines Equity Risk Premium from Damodaran</li>
-                <li><b>E/V and D/V</b> = market-value weights using live market capitalization</li>
-            </ul>
-        </div>
+    st.markdown("<div class='about-h2'>WACC — Weighted Average Cost of Capital</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>WACC is the minimum annual return a company must earn to satisfy both its shareholders and its lenders.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-formula'>WACC = (E/V) x Ke + (D/V) x Kd x (1 - Tax Rate)</div>", unsafe_allow_html=True)
+    st.markdown("<ul class='about-ul'><li><b>Ke</b> = Cost of Equity: Rf + Beta x ERP</li><li><b>Kd</b> = Cost of Debt from Damodaran's synthetic rating table</li><li><b>Rf</b> = 7.706%, 25-year BVAL rate from Bureau of the Treasury</li><li><b>ERP</b> = 6.69%, Philippines Equity Risk Premium from Damodaran</li><li><b>E/V and D/V</b> = market-value weights using live market capitalization</li></ul>", unsafe_allow_html=True)
 
-        <div class="about-section">
-            <div class="about-h2">The ROIC vs. WACC Spread</div>
-            <ul class="about-ul">
-                <li><b>ROIC above WACC</b> means the company generates returns above its cost of capital. Every peso deployed produces more than it costs.</li>
-                <li><b>ROIC below WACC</b> means the company earns less than its capital costs. Even with a reported profit, it is not generating sufficient returns relative to risk.</li>
-            </ul>
-        </div>
+    st.markdown("<div class='about-h2'>The ROIC vs. WACC Spread</div>", unsafe_allow_html=True)
+    st.markdown("<ul class='about-ul'><li><b>ROIC above WACC</b> means the company generates returns above its cost of capital. Every peso deployed produces more than it costs.</li><li><b>ROIC below WACC</b> means the company earns less than its capital costs. Even with a reported profit, it is not generating sufficient returns relative to risk.</li></ul>", unsafe_allow_html=True)
 
-        <div class="about-section">
-            <div class="about-h2">How the Data Was Collected</div>
-            <ul class="about-ul">
-                <li><b>Yahoo Finance</b>, for companies with OTC tickers, via the yfinance Python library</li>
-                <li><b>Reuters</b>, for PSE-only (.PS) tickers, via Selenium and Chrome browser scripts</li>
-            </ul>
-            <div class="about-p">The pipeline is fully automated in Python. Results are pushed to GitHub and served via Streamlit Community Cloud. The entire stack runs on open-source tools.</div>
-        </div>
+    st.markdown("<div class='about-h2'>How the Data Was Collected</div>", unsafe_allow_html=True)
+    st.markdown("<ul class='about-ul'><li><b>Yahoo Finance</b>, for companies with OTC tickers, via the yfinance Python library</li><li><b>Reuters</b>, for PSE-only (.PS) tickers, via Selenium and Chrome browser scripts</li></ul>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>The pipeline is fully automated in Python. Results are pushed to GitHub and served via Streamlit Community Cloud. The entire stack runs on open-source tools.</div>", unsafe_allow_html=True)
 
-        <div class="about-section">
-            <div class="about-h2">On Sustainability and Financial Inclusion</div>
-            <div class="about-p">Markets work better when more people participate in them. A stock market where participation is limited to a small fraction of the population constrains liquidity, price discovery, and capital allocation. This project sits at the intersection of financial literacy, open data, and sustainability. It will be updated every quarter.</div>
-        </div>
+    st.markdown("<div class='about-h2'>On Sustainability and Financial Inclusion</div>", unsafe_allow_html=True)
+    st.markdown("<div class='about-p'>Markets work better when more people participate in them. A stock market where participation is limited to a small fraction of the population constrains liquidity, price discovery, and capital allocation. This project sits at the intersection of financial literacy, open data, and sustainability. It will be updated every quarter.</div>", unsafe_allow_html=True)
 
-        <div class="about-note">
-            <b>Limitations.</b> This dashboard is for informational and educational purposes only. It is not investment advice. Always do your own research before making investment decisions.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<div class='about-note'><b>Limitations.</b> This dashboard is for informational and educational purposes only. It is not investment advice. Always do your own research before making investment decisions.</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
 
 st.markdown('</div>', unsafe_allow_html=True)
 
