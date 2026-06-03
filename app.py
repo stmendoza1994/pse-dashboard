@@ -100,7 +100,7 @@ html, body, [class*="css"] {
 .card-val.b { color: #0066cc; }
 .card-sub { font-size: 0.84rem; color: #8a9faf; margin-top: 0.55rem; line-height: 1.5; }
 
-/* TABLE */
+/* TABLE - white with teal gridlines */
 [data-testid="stDataFrame"] {
     border-radius: 14px !important; overflow: hidden !important;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
@@ -257,20 +257,31 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Filter row
-col_page, col_sector, col_vc, col_space = st.columns([1.2, 2, 1.8, 4])
+col_sector, col_vc, col_space, col_about = st.columns([2, 1.8, 4, 1])
 
-with col_page:
-    st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
-    page = st.selectbox("Page", ["Dashboard", "About"], label_visibility="collapsed")
+with col_about:
+    st.markdown("<div style='height:0.4rem'></div>", unsafe_allow_html=True)
+    if st.button("ℹ About", use_container_width=True):
+        st.session_state["page"] = "About"
+    if "page" not in st.session_state:
+        st.session_state["page"] = "Dashboard"
+
+page = st.session_state.get("page", "Dashboard")
 
 with col_sector:
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
     sectors = ["All Sectors"] + sorted(df["sector"].dropna().unique().tolist())
     sel_sector = st.selectbox("Sector", sectors, label_visibility="collapsed")
+    if sel_sector != st.session_state.get("_last_sector", sel_sector):
+        st.session_state["page"] = "Dashboard"
+    st.session_state["_last_sector"] = sel_sector
 
 with col_vc:
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
     only_vc = st.toggle("Value creators only", value=False)
+    if only_vc != st.session_state.get("_last_vc", only_vc):
+        st.session_state["page"] = "Dashboard"
+    st.session_state["_last_vc"] = only_vc
 
 # Apply filters
 fdf = df.copy()
@@ -492,6 +503,9 @@ if page == "Dashboard":
 #  ABOUT PAGE
 # ════════════════════════════════
 else:
+    if st.button("← Back to Dashboard"):
+        st.session_state["page"] = "Dashboard"
+        st.rerun()
     st.markdown("""
     <div class="about-wrap">
         <div class="about-h1">About This Project</div>
