@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 import plotly.graph_objects as go
 import re as _re
@@ -8,31 +7,8 @@ st.set_page_config(
     page_title="PSE Valuation",
     page_icon="🇵🇭",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
-
-# JavaScript to permanently remove the collapse button from the DOM
-components.html("""
-<script>
-function removeCollapseButton() {
-    const buttons = window.parent.document.querySelectorAll(
-        '[data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"], button[kind="header"]'
-    );
-    buttons.forEach(b => b.remove());
-    
-    const allButtons = window.parent.document.querySelectorAll('button');
-    allButtons.forEach(b => {
-        if (b.innerHTML.includes('chevron') || b.innerHTML.includes('arrow') || 
-            b.getAttribute('aria-label') === 'Close sidebar' ||
-            b.getAttribute('aria-label') === 'Collapse sidebar') {
-            b.remove();
-        }
-    });
-}
-removeCollapseButton();
-setInterval(removeCollapseButton, 500);
-</script>
-""", height=0)
 
 st.markdown("""
 <style>
@@ -47,102 +23,62 @@ html, body, [class*="css"] {
     line-height: 1.55;
 }
 
+/* Hide sidebar completely */
+[data-testid="stSidebar"],
+[data-testid="collapsedControl"] { display: none !important; }
+
 .stApp { background: #f5f6fa; }
 .block-container { padding: 0 !important; max-width: 100% !important; }
 
-/* Hide every possible collapse/expand button */
-[data-testid="collapsedControl"],
-[data-testid="stSidebarCollapseButton"],
-section[data-testid="stSidebar"] button,
-.st-emotion-cache-1dr2tuc,
-.st-emotion-cache-czk5ss { 
-    display: none !important; 
-    visibility: hidden !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    opacity: 0 !important;
-}
-
-/* SIDEBAR */
-[data-testid="stSidebar"] {
-    background: #1d3a4f !important;
-    min-width: 260px !important;
-    max-width: 260px !important;
-}
-[data-testid="stSidebar"] .block-container { 
-    padding: 2rem 1.6rem !important; 
-}
-
-/* Sidebar ALL text white */
-[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] span,
-[data-testid="stSidebar"] div {
-    color: #c0d8e4 !important;
-}
-
-/* Sidebar section headers */
-[data-testid="stSidebar"] label {
-    font-size: 0.78rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.1em !important;
-    text-transform: uppercase !important;
-    color: #6a96ae !important;
-}
-
-/* Sidebar radio */
-[data-testid="stSidebar"] [data-testid="stRadio"] label {
-    color: #c0d8e4 !important;
-    font-size: 0.95rem !important;
-    text-transform: none !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.01em !important;
-}
-
-/* Sidebar selectbox - FORCE white text */
-[data-testid="stSidebar"] [data-testid="stSelectbox"] > div > div {
-    background: #122535 !important;
-    border: 1px solid #3a6a85 !important;
-    border-radius: 10px !important;
-    color: #ffffff !important;
-    font-size: 0.97rem !important;
-}
-[data-testid="stSidebar"] [data-testid="stSelectbox"] > div > div * {
-    color: #ffffff !important;
-}
-[data-testid="stSidebar"] [data-testid="stSelectbox"] svg {
-    fill: #7ab0c8 !important;
-}
-
-/* Sidebar toggle */
-[data-testid="stSidebar"] [data-testid="stToggle"] label {
-    color: #c0d8e4 !important;
-    font-size: 0.95rem !important;
-    text-transform: none !important;
-    font-weight: 500 !important;
-}
-
-/* BANNER */
-.top-banner {
+/* TOP NAV BAR */
+.topbar {
     background: linear-gradient(135deg, #1d3a4f 0%, #122535 100%);
-    padding: 1.8rem 3rem;
+    padding: 1.2rem 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #2a4f68;
 }
-.banner-title { font-size: 1.45rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
-.banner-sub { font-size: 0.82rem; color: #6a96ae; margin-top: 0.4rem; line-height: 1.5; }
-.banner-stats { display: flex; gap: 3rem; align-items: center; }
-.bstat-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6a96ae; margin-bottom: 0.35rem; }
-.bstat-val { font-size: 1.55rem; font-weight: 700; color: #fff; letter-spacing: -0.03em; }
+.topbar-left { display: flex; align-items: center; gap: 2rem; }
+.topbar-title { font-size: 1.15rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; white-space: nowrap; }
+.topbar-sub { font-size: 0.75rem; color: #6a96ae; font-weight: 400; }
+.topbar-stats { display: flex; gap: 2.5rem; align-items: center; }
+.bstat-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6a96ae; margin-bottom: 0.2rem; }
+.bstat-val { font-size: 1.3rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
 .bstat-val.g { color: #4cd964; }
 .bstat-val.r { color: #ff6b6b; }
 .bstat-val.b { color: #5ac8fa; }
 
+/* FILTER BAR */
+.filterbar {
+    background: #ffffff;
+    padding: 1rem 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-bottom: 1px solid #e2e6ed;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.filter-label {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #8a9faf; white-space: nowrap;
+}
+
+/* NAV TABS */
+.navtab-wrap { display: flex; gap: 0.3rem; }
+.navtab {
+    padding: 0.45rem 1.1rem; border-radius: 8px;
+    font-size: 0.88rem; font-weight: 600; color: #6b7f93;
+    cursor: pointer; border: 1px solid transparent;
+    text-decoration: none; background: transparent;
+}
+.navtab.active {
+    background: #eaf3f8; color: #1d3a4f;
+    border-color: #b8d4e4;
+}
+
 /* CONTENT */
-.content { padding: 2.2rem 3rem 3.5rem 2rem; }
+.content { padding: 2rem 3rem 3.5rem 3rem; }
 
 /* SECTION LABEL */
 .sec-label {
@@ -164,53 +100,37 @@ section[data-testid="stSidebar"] button,
 .card-val.b { color: #0066cc; }
 .card-sub { font-size: 0.84rem; color: #8a9faf; margin-top: 0.55rem; line-height: 1.5; }
 
-/* TABLE - white with teal gridlines */
+/* TABLE */
 [data-testid="stDataFrame"] {
-    border-radius: 14px !important;
-    overflow: hidden !important;
+    border-radius: 14px !important; overflow: hidden !important;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
     border: 1px solid #b8d4e4 !important;
     margin-right: 2rem !important;
 }
-[data-testid="stDataFrame"] table {
-    background: #ffffff !important;
-    border-collapse: collapse !important;
-}
+[data-testid="stDataFrame"] table { background: #ffffff !important; border-collapse: collapse !important; }
 [data-testid="stDataFrame"] thead tr th {
-    background: #eaf3f8 !important;
-    color: #2a6080 !important;
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.06em !important;
-    text-transform: uppercase !important;
+    background: #eaf3f8 !important; color: #2a6080 !important;
+    font-size: 0.75rem !important; font-weight: 700 !important;
+    letter-spacing: 0.06em !important; text-transform: uppercase !important;
     border-bottom: 2px solid #b8d4e4 !important;
     border-right: 1px solid #b8d4e4 !important;
     padding: 0.75rem 0.9rem !important;
 }
 [data-testid="stDataFrame"] tbody tr td {
-    background: #ffffff !important;
-    color: #1a2e3b !important;
+    background: #ffffff !important; color: #1a2e3b !important;
     font-size: 0.92rem !important;
     border-bottom: 1px solid #d0e8f2 !important;
     border-right: 1px solid #d0e8f2 !important;
     padding: 0.65rem 0.9rem !important;
 }
-[data-testid="stDataFrame"] tbody tr:nth-child(even) td {
-    background: #f7fbfd !important;
-}
-[data-testid="stDataFrame"] tbody tr:hover td {
-    background: #eaf3f8 !important;
-}
+[data-testid="stDataFrame"] tbody tr:nth-child(even) td { background: #f7fbfd !important; }
+[data-testid="stDataFrame"] tbody tr:hover td { background: #eaf3f8 !important; }
 
-/* WACC DETAIL ROWS */
+/* WACC ROWS */
 .drow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.72rem 0;
-    border-bottom: 1px solid #f0f3f6;
-    font-size: 0.92rem;
-    gap: 1rem;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.72rem 0; border-bottom: 1px solid #f0f3f6;
+    font-size: 0.92rem; gap: 1rem;
 }
 .drow:last-child { border-bottom: none; }
 .dkey { color: #6b7f93; font-weight: 500; }
@@ -223,22 +143,16 @@ section[data-testid="stSidebar"] button,
 .badge-g { background: #eafaf2; color: #27ae60; border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; font-weight: 700; }
 .badge-n { background: #fff4e0; color: #e67e22; border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; font-weight: 700; }
 
-/* BREAKDOWN - always light */
+/* BREAKDOWN */
 .bkdown {
-    background: #f8f9fc !important;
-    border-radius: 12px;
-    border: 1px solid #dce8f0;
-    padding: 1.6rem 1.8rem;
+    background: #f8f9fc !important; border-radius: 12px;
+    border: 1px solid #dce8f0; padding: 1.6rem 1.8rem;
     font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 0.84rem;
-    color: #2c3e50;
-    white-space: pre-wrap;
-    line-height: 1.9;
-    max-height: 580px;
-    overflow-y: auto;
+    font-size: 0.84rem; color: #2c3e50; white-space: pre-wrap;
+    line-height: 1.9; max-height: 580px; overflow-y: auto;
 }
 
-/* EXPANDER - always white, never black */
+/* EXPANDER */
 [data-testid="stExpander"],
 [data-testid="stExpander"] > details,
 [data-testid="stExpander"] details[open],
@@ -248,24 +162,18 @@ section[data-testid="stSidebar"] button,
     border-radius: 14px !important;
 }
 [data-testid="stExpander"] summary {
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    color: #1a2e3b !important;
-    padding: 1.2rem 1.5rem !important;
-    background: #ffffff !important;
-    border-radius: 14px !important;
+    font-size: 1rem !important; font-weight: 600 !important;
+    color: #1a2e3b !important; padding: 1.2rem 1.5rem !important;
+    background: #ffffff !important; border-radius: 14px !important;
 }
 [data-testid="stExpander"] summary:hover {
-    background: #f0f7fb !important;
-    color: #1a2e3b !important;
+    background: #f0f7fb !important; color: #1a2e3b !important;
 }
 
-/* MAIN SELECTBOX - visible text */
+/* SELECTBOX */
 [data-testid="stSelectbox"] > div > div {
-    background: #ffffff !important;
-    border: 1px solid #b8d4e4 !important;
-    border-radius: 10px !important;
-    font-size: 0.95rem !important;
+    background: #ffffff !important; border: 1px solid #b8d4e4 !important;
+    border-radius: 10px !important; font-size: 0.95rem !important;
     color: #1a2e3b !important;
 }
 [data-testid="stSelectbox"] > div > div * { color: #1a2e3b !important; }
@@ -279,7 +187,7 @@ section[data-testid="stSidebar"] button,
     padding: 0.55rem 1.5rem !important;
 }
 
-/* ABOUT PAGE */
+/* ABOUT */
 .about-wrap { max-width: 780px; margin: 0 auto; padding: 2.5rem 0 4rem 0; }
 .about-h1 { font-size: 1.9rem; font-weight: 800; color: #1a2e3b; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
 .about-lead { font-size: 1.05rem; color: #4a6070; line-height: 1.75; margin-bottom: 2.5rem; }
@@ -336,89 +244,77 @@ def load_txt():
 df = load()
 txt = load_txt()
 
-
-# ── Sidebar ───────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("""
-    <div style='margin-bottom:1.8rem;padding-bottom:1.4rem;border-bottom:1px solid #2a4f68;'>
-        <div style='font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:-0.02em;'>
-            🇵🇭 PSE Valuation</div>
-        <div style='font-size:0.82rem;color:#6a96ae;margin-top:0.3rem;'>
-            Fundamental Screener</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<div style='font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6a96ae;margin-bottom:0.5rem;'>Navigation</div>", unsafe_allow_html=True)
-    page = st.radio("Navigation", ["Dashboard", "About"], label_visibility="collapsed")
-
-    if page == "Dashboard":
-        st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
-        st.markdown("<div style='font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6a96ae;margin-bottom:0.5rem;'>Sector</div>", unsafe_allow_html=True)
-        sectors = ["All Sectors"] + sorted(df["sector"].dropna().unique().tolist())
-        sel_sector = st.selectbox("Sector", sectors, label_visibility="collapsed")
-        st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
-        only_vc = st.toggle("Value creators only", value=False)
-
-        fdf = df.copy()
-        if sel_sector != "All Sectors":
-            fdf = fdf[fdf["sector"] == sel_sector]
-        if only_vc:
-            fdf = fdf[fdf["roic_pct"].notna() & fdf["wacc_pct"].notna()
-                      & (fdf["roic_pct"] > fdf["wacc_pct"])]
-
-        valid = fdf[fdf["roic_pct"].notna() & fdf["wacc_pct"].notna()]
-        creators = int((valid["roic_pct"] > valid["wacc_pct"]).sum())
-
-        st.markdown(f"""
-        <div style='margin-top:2rem;padding-top:1.4rem;border-top:1px solid #2a4f68;'>
-            <div style='font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#6a96ae;margin-bottom:1.1rem;'>Summary</div>
-            <div style='display:flex;justify-content:space-between;margin-bottom:0.75rem;'>
-                <span style='font-size:0.92rem;color:#6a96ae;'>Showing</span>
-                <span style='font-size:0.92rem;font-weight:700;color:#fff;'>{len(fdf)} of {len(df)}</span>
-            </div>
-            <div style='display:flex;justify-content:space-between;margin-bottom:0.75rem;'>
-                <span style='font-size:0.92rem;color:#6a96ae;'>With data</span>
-                <span style='font-size:0.92rem;font-weight:700;color:#5ac8fa;'>{len(valid)}</span>
-            </div>
-            <div style='display:flex;justify-content:space-between;'>
-                <span style='font-size:0.92rem;color:#6a96ae;'>Value creators</span>
-                <span style='font-size:0.92rem;font-weight:700;color:#4cd964;'>{creators}</span>
-            </div>
+# ── Filter bar ────────────────────────────────────────────────────────────────
+st.markdown("""
+<div class="topbar">
+    <div class="topbar-left">
+        <div>
+            <div class="topbar-title">🇵🇭 PSE Valuation Dashboard</div>
+            <div class="topbar-sub">FCFF · ROIC · WACC &nbsp;·&nbsp; Yahoo Finance & Reuters &nbsp;·&nbsp; Rf 7.706% · Tax 25% · ERP 6.69%</div>
         </div>
-        """, unsafe_allow_html=True)
-    else:
-        fdf = df.copy()
-        valid = fdf[fdf["roic_pct"].notna() & fdf["wacc_pct"].notna()]
-        creators = int((valid["roic_pct"] > valid["wacc_pct"]).sum())
-        sel_sector = "All Sectors"
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Filter row
+col_page, col_sector, col_vc, col_space = st.columns([1.2, 2, 1.8, 4])
+
+with col_page:
+    st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
+    page = st.selectbox("Page", ["Dashboard", "About"], label_visibility="collapsed")
+
+with col_sector:
+    st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
+    sectors = ["All Sectors"] + sorted(df["sector"].dropna().unique().tolist())
+    sel_sector = st.selectbox("Sector", sectors, label_visibility="collapsed")
+
+with col_vc:
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+    only_vc = st.toggle("Value creators only", value=False)
+
+# Apply filters
+fdf = df.copy()
+if sel_sector != "All Sectors":
+    fdf = fdf[fdf["sector"] == sel_sector]
+if only_vc:
+    fdf = fdf[fdf["roic_pct"].notna() & fdf["wacc_pct"].notna()
+              & (fdf["roic_pct"] > fdf["wacc_pct"])]
+
+valid = fdf[fdf["roic_pct"].notna() & fdf["wacc_pct"].notna()]
+creators = int((valid["roic_pct"] > valid["wacc_pct"]).sum())
+avg_roic   = robust_mean(valid["roic_pct"])
+avg_wacc   = robust_mean(valid["wacc_pct"])
+avg_spread = (avg_roic - avg_wacc) if avg_roic is not None and avg_wacc is not None else None
+
+st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+# Stats bar
+s1, s2, s3, s4, s5 = st.columns(5)
+for col, label, val, color in [
+    (s1, "Companies", str(len(fdf)), "#1a2e3b"),
+    (s2, "Value Creators", str(creators), "#27ae60"),
+    (s3, "Avg ROIC", pct(avg_roic), "#0066cc"),
+    (s4, "Avg WACC", pct(avg_wacc), "#1a2e3b"),
+    (s5, "Avg Spread", pct(avg_spread, sign=True), "#27ae60" if avg_spread and avg_spread > 0 else "#e74c3c"),
+]:
+    col.markdown(f"""
+    <div style='background:#fff;border-radius:12px;padding:1rem 1.4rem;
+    box-shadow:0 1px 4px rgba(0,0,0,0.06);'>
+        <div style='font-size:0.65rem;font-weight:700;letter-spacing:0.1em;
+        text-transform:uppercase;color:#8a9faf;margin-bottom:0.3rem;'>{label}</div>
+        <div style='font-size:1.5rem;font-weight:700;color:{color};
+        letter-spacing:-0.02em;'>{val}</div>
+    </div>""", unsafe_allow_html=True)
+
+st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+st.markdown('<div class="content">', unsafe_allow_html=True)
 
 
 # ════════════════════════════════
-#  DASHBOARD PAGE
+#  DASHBOARD
 # ════════════════════════════════
 if page == "Dashboard":
 
-    avg_roic   = robust_mean(valid["roic_pct"])
-    avg_wacc   = robust_mean(valid["wacc_pct"])
-    avg_spread = (avg_roic - avg_wacc) if avg_roic is not None and avg_wacc is not None else None
-
-    st.markdown(f"""
-    <div class="top-banner">
-        <div>
-            <div class="banner-title">PSE Valuation Dashboard</div>
-            <div class="banner-sub">FCFF · ROIC · WACC &nbsp;·&nbsp; Yahoo Finance & Reuters &nbsp;·&nbsp; Rf 7.706% · Tax 25% · ERP 6.69%</div>
-        </div>
-        <div class="banner-stats">
-            <div><div class="bstat-label">Companies</div><div class="bstat-val">{len(fdf)}</div></div>
-            <div><div class="bstat-label">Value Creators</div><div class="bstat-val g">{creators}</div></div>
-            <div><div class="bstat-label">Avg ROIC</div><div class="bstat-val b">{pct(avg_roic)}</div></div>
-            <div><div class="bstat-label">Avg WACC</div><div class="bstat-val">{pct(avg_wacc)}</div></div>
-            <div><div class="bstat-label">Avg Spread</div><div class="bstat-val {clr(avg_spread)}">{pct(avg_spread, sign=True)}</div></div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown('<div class="content">', unsafe_allow_html=True)
     st.markdown('<div class="sec-label">All Companies</div>', unsafe_allow_html=True)
 
     tbl = fdf[["symbol","company","sector","fcff_2025_m","fcff_2024_m","fcff_2023_m",
@@ -456,7 +352,6 @@ if page == "Dashboard":
         mime="text/csv",
     )
 
-    # Company Deep Dive
     st.markdown('<div style="height:2.5rem"></div>', unsafe_allow_html=True)
     st.markdown('<div class="sec-label">Company Deep Dive</div>', unsafe_allow_html=True)
     st.markdown("<div style='font-size:0.88rem;color:#6b7f93;font-weight:600;margin-bottom:0.5rem;'>Select a company</div>", unsafe_allow_html=True)
@@ -536,8 +431,7 @@ if page == "Dashboard":
         fig1 = go.Figure(go.Bar(
             x=yrs, y=vals, marker_color=bcolors, marker_line_width=0,
             text=[money(v) for v in vals], textposition="outside",
-            textfont=dict(size=12, color="#1a2e3b", family="Inter"),
-            width=0.55,
+            textfont=dict(size=12, color="#1a2e3b", family="Inter"), width=0.55,
         ))
         fig1.add_hline(y=0, line_color="#dce8f0", line_width=1.5)
         fig1.update_layout(
@@ -559,8 +453,7 @@ if page == "Dashboard":
             marker_color=["#27ae60" if rv2 >= wv2 else "#e74c3c", "#0066cc"],
             marker_line_width=0,
             text=[pct(rv2), pct(wv2)], textposition="outside",
-            textfont=dict(size=13, color="#1a2e3b", family="Inter"),
-            width=0.45,
+            textfont=dict(size=13, color="#1a2e3b", family="Inter"), width=0.45,
         ))
         fig2.update_layout(
             paper_bgcolor="#fff", plot_bgcolor="#fff",
@@ -594,14 +487,11 @@ if page == "Dashboard":
         else:
             st.info("Breakdown not available for this company.")
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 
 # ════════════════════════════════
 #  ABOUT PAGE
 # ════════════════════════════════
 else:
-    st.markdown('<div class="content">', unsafe_allow_html=True)
     st.markdown("""
     <div class="about-wrap">
         <div class="about-h1">About This Project</div>
@@ -677,8 +567,8 @@ else:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
