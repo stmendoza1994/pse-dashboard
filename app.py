@@ -12,553 +12,498 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-* { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body, [class*="css"] {
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 14px;
     -webkit-font-smoothing: antialiased;
 }
 
-.stApp {
-    background: #f2f2f7;
-    color: #1c1c1e;
-}
+/* ── Background ── */
+.stApp { background: #f0f2f5; }
+.block-container { padding: 0 !important; max-width: 100% !important; }
 
-.block-container {
-    padding: 2rem 2.5rem 4rem 2.5rem;
-    max-width: 1400px;
-}
-
-/* Sidebar */
+/* ── Sidebar ── */
 [data-testid="stSidebar"] {
-    background: #ffffff;
-    border-right: 1px solid #e5e5ea;
+    background: #1a3a4a !important;
+    border-right: none;
+    min-width: 220px !important;
+    max-width: 220px !important;
 }
-[data-testid="stSidebar"] .block-container {
-    padding: 2rem 1.5rem;
-}
+[data-testid="stSidebar"] * { color: #cde0e8 !important; }
+[data-testid="stSidebar"] .block-container { padding: 1.5rem 1.2rem !important; }
 [data-testid="stSidebar"] label {
-    font-size: 0.7rem !important;
+    font-size: 0.68rem !important;
     font-weight: 600 !important;
-    letter-spacing: 0.06em !important;
+    letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    color: #8e8e93 !important;
+    color: #7aa8bc !important;
+}
+[data-testid="stSidebar"] [data-testid="stSelectbox"] > div > div {
+    background: #0f2535 !important;
+    border: 1px solid #2a5570 !important;
+    border-radius: 8px !important;
+    color: #e0f0f8 !important;
+    font-size: 0.85rem !important;
+}
+[data-testid="stSidebar"] p {
+    color: #7aa8bc !important;
+    font-size: 0.78rem !important;
 }
 
-/* Cards */
-.card {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+/* ── Top banner ── */
+.top-banner {
+    background: linear-gradient(135deg, #1a3a4a 0%, #0f2535 100%);
+    padding: 1.4rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #2a5570;
 }
-
-.kpi-card {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 1.4rem 1.6rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-}
-
-.kpi-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #8e8e93;
-    margin-bottom: 0.5rem;
-}
-
-.kpi-value {
-    font-size: 2rem;
+.banner-title {
+    font-size: 1.35rem;
     font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    color: #1c1c1e;
+    color: #ffffff;
+    letter-spacing: -0.01em;
 }
-
-.kpi-sub {
+.banner-sub {
     font-size: 0.75rem;
-    font-weight: 500;
-    margin-top: 0.4rem;
-    color: #8e8e93;
+    color: #7aa8bc;
+    margin-top: 0.2rem;
+    font-weight: 400;
 }
-
-.green { color: #34c759; }
-.red   { color: #ff3b30; }
-.blue  { color: #007aff; }
-.gray  { color: #8e8e93; }
-
-.badge-green {
-    display: inline-block;
-    background: #e8fdf0;
-    color: #34c759;
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 0.72rem;
+.banner-stats {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+.banner-stat-label {
+    font-size: 0.65rem;
     font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7aa8bc;
+    margin-bottom: 0.2rem;
 }
-.badge-red {
-    display: inline-block;
-    background: #fff0ef;
-    color: #ff3b30;
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 0.72rem;
-    font-weight: 600;
-}
-
-.section-title {
+.banner-stat-val {
     font-size: 1.4rem;
     font-weight: 700;
+    color: #ffffff;
     letter-spacing: -0.02em;
-    color: #1c1c1e;
-    margin: 2rem 0 1rem 0;
 }
+.banner-stat-val.green { color: #4cd964; }
+.banner-stat-val.red   { color: #ff6b6b; }
+.banner-stat-val.blue  { color: #5ac8fa; }
 
-.table-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
+/* ── Content wrapper ── */
+.content-wrap { padding: 1.8rem 2.5rem; }
+
+/* ── Section label ── */
+.section-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #8e8e93;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #f2f2f7;
-    margin-bottom: 0.3rem;
+    color: #8a9bb0;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dde3ec;
 }
 
-.detail-row {
+/* ── Cards ── */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.3rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.card-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a9bb0;
+    margin-bottom: 0.5rem;
+}
+.card-val {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a2e3b;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+.card-val.green { color: #28a745; }
+.card-val.red   { color: #dc3545; }
+.card-val.blue  { color: #0075c9; }
+.card-sub {
+    font-size: 0.75rem;
+    color: #8a9bb0;
+    margin-top: 0.35rem;
+    font-weight: 400;
+}
+
+/* ── Table ── */
+[data-testid="stDataFrame"] {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07) !important;
+    border: none !important;
+}
+
+/* ── Detail rows ── */
+.drow {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid #f2f2f7;
-    font-size: 0.88rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f0f2f5;
+    font-size: 0.85rem;
 }
-.detail-row:last-child { border-bottom: none; }
-.detail-key { color: #8e8e93; font-weight: 500; }
-.detail-val { font-weight: 600; color: #1c1c1e; }
+.drow:last-child { border-bottom: none; }
+.dkey { color: #6b7f93; font-weight: 500; }
+.dval { font-weight: 600; color: #1a2e3b; }
+.dval.green { color: #28a745; }
+.dval.red   { color: #dc3545; }
+.dval.blue  { color: #0075c9; }
 
-.breakdown-box {
-    background: #1c1c1e;
-    border-radius: 14px;
-    padding: 1.5rem;
+/* ── Badge ── */
+.badge-g { background:#eafaf0; color:#28a745; border-radius:20px; padding:2px 10px; font-size:0.72rem; font-weight:600; }
+.badge-r { background:#fdf0f0; color:#dc3545; border-radius:20px; padding:2px 10px; font-size:0.72rem; font-weight:600; }
+
+/* ── Breakdown box ── */
+.bkdown {
+    background: #1a2e3b;
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
     font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 0.76rem;
-    color: #a0a0a8;
+    font-size: 0.74rem;
+    color: #9bb8c9;
     white-space: pre-wrap;
     line-height: 1.8;
-    max-height: 520px;
+    max-height: 500px;
     overflow-y: auto;
 }
 
-/* Override streamlit defaults */
-[data-testid="stDataFrame"] {
-    border-radius: 14px;
-    overflow: hidden;
-    border: none !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+/* ── Selectbox ── */
+[data-testid="stSelectbox"] > div > div {
+    background: #fff;
+    border: 1px solid #dde3ec;
+    border-radius: 10px;
+    font-size: 0.88rem;
 }
 
-div[data-testid="metric-container"] { display: none; }
+/* ── Toggle ── */
+[data-testid="stToggle"] label { color: #cde0e8 !important; font-size:0.82rem !important; }
 
-.stSelectbox > div > div {
-    background: #f2f2f7;
-    border: none;
-    border-radius: 12px;
-    color: #1c1c1e;
-}
-
-hr { border-color: #e5e5ea !important; }
-
-/* Hide streamlit branding */
-#MainMenu { visibility: hidden; }
-footer { visibility: hidden; }
+/* Hide streamlit chrome */
+#MainMenu, footer, header { visibility: hidden; }
+.stDeployButton { display: none; }
 </style>
 """, unsafe_allow_html=True)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
-def fmt_pct(v):
+def pct(v, sign=False):
     if pd.isna(v): return "—"
-    return f"{v:.2f}%"
+    s = f"{v:+.2f}%" if sign else f"{v:.2f}%"
+    return s
 
-def fmt_m(v):
+def money(v):
     if pd.isna(v): return "—"
-    if abs(v) >= 1000:
-        return f"₱{v/1000:,.1f}B"
+    if abs(v) >= 1_000_000: return f"₱{v/1_000_000:.2f}T"
+    if abs(v) >= 1_000:     return f"₱{v/1_000:.1f}B"
     return f"₱{v:,.0f}M"
 
-def fmt_b(v):
-    if pd.isna(v): return "—"
-    return f"₱{v:,.2f}B"
-
-def color_class(v, reverse=False):
-    if pd.isna(v): return "gray"
-    if reverse:
-        return "red" if v > 0 else "green"
+def clr(v, reverse=False):
+    if pd.isna(v): return ""
+    if reverse: return "red" if v > 0 else "green"
     return "green" if v > 0 else "red"
 
 
 # ── Data ──────────────────────────────────────────────────────────────────────
 @st.cache_data
-def load_data():
+def load():
     df = pd.read_csv("data/pse_valuation.csv")
     return df
 
 @st.cache_data
-def load_breakdown():
-    with open("data/pse_valuation_breakdown.txt", "r") as f:
+def load_txt():
+    with open("data/pse_valuation_breakdown.txt") as f:
         return f.read()
 
-df = load_data()
-breakdown_text = load_breakdown()
+df = load()
+txt = load_txt()
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style='margin-bottom:2rem;'>
-        <div style='font-size:1.3rem;font-weight:800;letter-spacing:-0.02em;color:#1c1c1e;'>
+    <div style='margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:1px solid #2a5570;'>
+        <div style='font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:-0.01em;'>
             🇵🇭 PSE Valuation
         </div>
-        <div style='font-size:0.75rem;color:#8e8e93;margin-top:0.2rem;font-weight:500;'>
-            Fundamental Screener
-        </div>
+        <div style='font-size:0.72rem;color:#7aa8bc;margin-top:0.25rem;'>Fundamental Screener</div>
     </div>
     """, unsafe_allow_html=True)
 
     sectors = ["All Sectors"] + sorted(df["sector"].dropna().unique().tolist())
-    selected_sector = st.selectbox("Sector", sectors)
-
-    st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
-    show_value_creators = st.toggle("Value creators only (ROIC > WACC)", value=False)
+    sel_sector = st.selectbox("Sector", sectors)
+    st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
+    only_creators = st.toggle("Value creators only", value=False)
 
     # Apply filters
-    filtered = df.copy()
-    if selected_sector != "All Sectors":
-        filtered = filtered[filtered["sector"] == selected_sector]
-    if show_value_creators:
-        filtered = filtered[
-            filtered["roic_pct"].notna() &
-            filtered["wacc_pct"].notna() &
-            (filtered["roic_pct"] > filtered["wacc_pct"])
-        ]
+    fdf = df.copy()
+    if sel_sector != "All Sectors":
+        fdf = fdf[fdf["sector"] == sel_sector]
+    if only_creators:
+        fdf = fdf[fdf["roic_pct"].notna() & fdf["wacc_pct"].notna() & (fdf["roic_pct"] > fdf["wacc_pct"])]
 
-    st.markdown("<div style='margin-top:2rem;'></div>", unsafe_allow_html=True)
-    total = len(df)
-    shown = len(filtered)
-    has_data = filtered["roic_pct"].notna().sum()
+    valid = fdf[fdf["roic_pct"].notna() & fdf["wacc_pct"].notna()]
+    creators = (valid["roic_pct"] > valid["wacc_pct"]).sum()
 
     st.markdown(f"""
-    <div style='background:#f2f2f7;border-radius:14px;padding:1rem;'>
-        <div style='font-size:0.7rem;font-weight:600;text-transform:uppercase;
-        letter-spacing:0.06em;color:#8e8e93;margin-bottom:0.8rem;'>Summary</div>
-        <div style='display:flex;justify-content:space-between;margin-bottom:0.5rem;'>
-            <span style='font-size:0.85rem;color:#8e8e93;'>Showing</span>
-            <span style='font-size:0.85rem;font-weight:700;color:#1c1c1e;'>{shown} of {total}</span>
+    <div style='margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid #2a5570;'>
+        <div style='font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+        color:#7aa8bc;margin-bottom:1rem;'>Summary</div>
+        <div style='display:flex;justify-content:space-between;margin-bottom:0.6rem;'>
+            <span style='font-size:0.82rem;color:#7aa8bc;'>Showing</span>
+            <span style='font-size:0.82rem;font-weight:700;color:#fff;'>{len(fdf)} of {len(df)}</span>
+        </div>
+        <div style='display:flex;justify-content:space-between;margin-bottom:0.6rem;'>
+            <span style='font-size:0.82rem;color:#7aa8bc;'>With data</span>
+            <span style='font-size:0.82rem;font-weight:700;color:#5ac8fa;'>{len(valid)}</span>
         </div>
         <div style='display:flex;justify-content:space-between;'>
-            <span style='font-size:0.85rem;color:#8e8e93;'>With full data</span>
-            <span style='font-size:0.85rem;font-weight:700;color:#007aff;'>{has_data}</span>
+            <span style='font-size:0.82rem;color:#7aa8bc;'>Value creators</span>
+            <span style='font-size:0.82rem;font-weight:700;color:#4cd964;'>{creators}</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 
-# ── Header ────────────────────────────────────────────────────────────────────
-st.markdown("""
-<div style='margin-bottom:1.5rem;'>
-    <div style='font-size:2rem;font-weight:800;letter-spacing:-0.03em;color:#1c1c1e;'>
-        PSE Valuation Dashboard
+# ── Banner ────────────────────────────────────────────────────────────────────
+avg_roic = valid["roic_pct"].mean() if len(valid) else None
+avg_wacc = valid["wacc_pct"].mean() if len(valid) else None
+avg_spread = (avg_roic - avg_wacc) if avg_roic and avg_wacc else None
+spread_c = "green" if avg_spread and avg_spread > 0 else "red"
+
+st.markdown(f"""
+<div class="top-banner">
+    <div>
+        <div class="banner-title">PSE Valuation Dashboard</div>
+        <div class="banner-sub">
+            FCFF · ROIC · WACC &nbsp;·&nbsp; Yahoo Finance & Reuters
+            &nbsp;·&nbsp; Rf 7.706% · Tax 25% · ERP 6.69%
+        </div>
     </div>
-    <div style='font-size:0.88rem;color:#8e8e93;margin-top:0.3rem;font-weight:500;'>
-        FCFF · ROIC · WACC &nbsp;·&nbsp; Yahoo Finance & Reuters &nbsp;·&nbsp;
-        Rf 7.706% &nbsp;·&nbsp; Tax 25% &nbsp;·&nbsp; ERP 6.69%
+    <div class="banner-stats">
+        <div>
+            <div class="banner-stat-label">Companies</div>
+            <div class="banner-stat-val">{len(fdf)}</div>
+        </div>
+        <div>
+            <div class="banner-stat-label">Value Creators</div>
+            <div class="banner-stat-val green">{creators}</div>
+        </div>
+        <div>
+            <div class="banner-stat-label">Avg ROIC</div>
+            <div class="banner-stat-val blue">{pct(avg_roic)}</div>
+        </div>
+        <div>
+            <div class="banner-stat-label">Avg WACC</div>
+            <div class="banner-stat-val">{pct(avg_wacc)}</div>
+        </div>
+        <div>
+            <div class="banner-stat-label">Avg Spread</div>
+            <div class="banner-stat-val {spread_c}">{pct(avg_spread, sign=True)}</div>
+        </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown('<div class="content-wrap">', unsafe_allow_html=True)
 
-# ── Summary KPIs ──────────────────────────────────────────────────────────────
-valid = filtered[filtered["roic_pct"].notna() & filtered["wacc_pct"].notna()]
-value_creators = (valid["roic_pct"] > valid["wacc_pct"]).sum()
-avg_roic = valid["roic_pct"].mean()
-avg_wacc = valid["wacc_pct"].mean()
-avg_spread = avg_roic - avg_wacc if not pd.isna(avg_roic) else None
+# ── Table ─────────────────────────────────────────────────────────────────────
+st.markdown('<div class="section-label">All Companies</div>', unsafe_allow_html=True)
 
-k1, k2, k3, k4 = st.columns(4)
-
-with k1:
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>Companies</div>
-        <div class='kpi-value'>{shown}</div>
-        <div class='kpi-sub'>{selected_sector}</div>
-    </div>""", unsafe_allow_html=True)
-
-with k2:
-    vc_pct = f"{value_creators/len(valid)*100:.0f}%" if len(valid) > 0 else "—"
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>Value Creators</div>
-        <div class='kpi-value green'>{value_creators}</div>
-        <div class='kpi-sub'>{vc_pct} of companies with data</div>
-    </div>""", unsafe_allow_html=True)
-
-with k3:
-    roic_color = color_class(avg_spread)
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>Avg ROIC</div>
-        <div class='kpi-value {roic_color}'>{fmt_pct(avg_roic)}</div>
-        <div class='kpi-sub'>vs WACC {fmt_pct(avg_wacc)}</div>
-    </div>""", unsafe_allow_html=True)
-
-with k4:
-    spread_color = color_class(avg_spread)
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>Avg ROIC − WACC</div>
-        <div class='kpi-value {spread_color}'>{(f"+{avg_spread:.2f}%" if avg_spread and avg_spread > 0 else fmt_pct(avg_spread))}</div>
-        <div class='kpi-sub'>Economic value spread</div>
-    </div>""", unsafe_allow_html=True)
-
-st.markdown("<div style='margin-top:0.5rem;'></div>", unsafe_allow_html=True)
-
-# ── Company Table ─────────────────────────────────────────────────────────────
-st.markdown("<div class='section-title'>All Companies</div>", unsafe_allow_html=True)
-
-table_df = filtered[[
-    "symbol", "company", "sector",
-    "fcff_2025_m", "fcff_2024_m", "fcff_2023_m",
-    "roic_pct", "wacc_pct", "rating", "market_cap_b"
-]].copy()
-
-table_df["Spread"] = table_df["roic_pct"] - table_df["wacc_pct"]
-
-table_df = table_df.rename(columns={
-    "symbol": "Ticker",
-    "company": "Company",
-    "sector": "Sector",
-    "fcff_2025_m": "FCFF 2025 (₱M)",
-    "fcff_2024_m": "FCFF 2024 (₱M)",
-    "fcff_2023_m": "FCFF 2023 (₱M)",
-    "roic_pct": "ROIC",
-    "wacc_pct": "WACC",
-    "rating": "Rating",
-    "market_cap_b": "Mkt Cap (₱B)",
+tbl = fdf[["symbol","company","sector","fcff_2025_m","fcff_2024_m","fcff_2023_m",
+           "roic_pct","wacc_pct","rating","market_cap_b"]].copy()
+tbl["Spread"] = tbl["roic_pct"] - tbl["wacc_pct"]
+tbl = tbl.rename(columns={
+    "symbol":"Ticker","company":"Company","sector":"Sector",
+    "fcff_2025_m":"FCFF 2025 (₱M)","fcff_2024_m":"FCFF 2024 (₱M)","fcff_2023_m":"FCFF 2023 (₱M)",
+    "roic_pct":"ROIC (%)","wacc_pct":"WACC (%)","rating":"Rating","market_cap_b":"Mkt Cap (₱B)",
 })
 
-def style_table(df):
-    return df.style.format({
-        "FCFF 2025 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
-        "FCFF 2024 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
-        "FCFF 2023 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
-        "ROIC": lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
-        "WACC": lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
-        "Spread": lambda v: f"{v:+.2f}%" if pd.notna(v) else "—",
-        "Mkt Cap (₱B)": lambda v: f"{v:,.3f}" if pd.notna(v) else "—",
-    }).map(
-        lambda v: "color: #34c759; font-weight:600" if isinstance(v, float) and not pd.isna(v) and v > 0
-        else ("color: #ff3b30; font-weight:600" if isinstance(v, float) and not pd.isna(v) and v < 0 else ""),
-        subset=["Spread"]
-    )
+styled = tbl.style.format({
+    "FCFF 2025 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
+    "FCFF 2024 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
+    "FCFF 2023 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
+    "ROIC (%)":        lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
+    "WACC (%)":        lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
+    "Spread":          lambda v: f"{v:+.2f}%" if pd.notna(v) else "—",
+    "Mkt Cap (₱B)":   lambda v: f"{v:,.3f}" if pd.notna(v) else "—",
+}).map(lambda v: "color:#28a745;font-weight:600" if isinstance(v,float) and pd.notna(v) and v>0
+       else ("color:#dc3545;font-weight:600" if isinstance(v,float) and pd.notna(v) and v<0 else ""),
+       subset=["Spread"])
 
-st.dataframe(style_table(table_df), use_container_width=True, height=380)
+st.dataframe(styled, use_container_width=True, height=360)
 
-# ── Company Deep Dive ─────────────────────────────────────────────────────────
-st.markdown("<div class='section-title'>Company Deep Dive</div>", unsafe_allow_html=True)
+# ── Deep Dive ─────────────────────────────────────────────────────────────────
+st.markdown('<div style="height:1.5rem"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section-label">Company Deep Dive</div>', unsafe_allow_html=True)
 
-ticker_list = filtered["symbol"].tolist()
-selected_ticker = st.selectbox(
-    "Select a company",
-    ticker_list,
+tickers = fdf["symbol"].tolist()
+sel = st.selectbox(
+    "Select company",
+    tickers,
     format_func=lambda t: f"{t}  —  {df[df['symbol']==t]['company'].values[0]}"
 )
 
-row = filtered[filtered["symbol"] == selected_ticker].iloc[0]
-spread_val = (row["roic_pct"] - row["wacc_pct"]) if pd.notna(row["roic_pct"]) and pd.notna(row["wacc_pct"]) else None
-is_creator = spread_val is not None and spread_val > 0
+row = fdf[fdf["symbol"] == sel].iloc[0]
+sp = (row["roic_pct"] - row["wacc_pct"]) if pd.notna(row["roic_pct"]) and pd.notna(row["wacc_pct"]) else None
+is_vc = sp is not None and sp > 0
 
-# KPI row
-c1, c2, c3, c4 = st.columns(4)
-
-with c1:
-    fcff_color = "green" if pd.notna(row["fcff_2025_m"]) and row["fcff_2025_m"] > 0 else "red"
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>FCFF 2025</div>
-        <div class='kpi-value {fcff_color}'>{fmt_m(row["fcff_2025_m"])}</div>
-        <div class='kpi-sub'>{row["sector"]}</div>
+# 4 KPI cards
+k1, k2, k3, k4 = st.columns(4)
+with k1:
+    fc = "green" if pd.notna(row["fcff_2025_m"]) and row["fcff_2025_m"] > 0 else "red"
+    st.markdown(f"""<div class="card">
+        <div class="card-label">FCFF 2025</div>
+        <div class="card-val {fc}">{money(row['fcff_2025_m'])}</div>
+        <div class="card-sub">{row['sector']}</div>
     </div>""", unsafe_allow_html=True)
 
-with c2:
-    roic_c = color_class(spread_val)
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>ROIC</div>
-        <div class='kpi-value {roic_c}'>{fmt_pct(row["roic_pct"])}</div>
-        <div class='kpi-sub'>Return on Invested Capital</div>
+with k2:
+    rc = clr(sp)
+    st.markdown(f"""<div class="card">
+        <div class="card-label">ROIC</div>
+        <div class="card-val {rc}">{pct(row['roic_pct'])}</div>
+        <div class="card-sub">Return on Invested Capital</div>
     </div>""", unsafe_allow_html=True)
 
-with c3:
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>WACC</div>
-        <div class='kpi-value blue'>{fmt_pct(row["wacc_pct"])}</div>
-        <div class='kpi-sub'>Cost of Capital</div>
+with k3:
+    st.markdown(f"""<div class="card">
+        <div class="card-label">WACC</div>
+        <div class="card-val blue">{pct(row['wacc_pct'])}</div>
+        <div class="card-sub">Weighted Avg Cost of Capital</div>
     </div>""", unsafe_allow_html=True)
 
-with c4:
-    sp_color = color_class(spread_val)
-    badge = f"<span class='badge-{'green' if is_creator else 'red'}'>{'Value Creator ✓' if is_creator else 'Value Destroyer ✗'}</span>"
-    sp_str = f"{spread_val:+.2f}%" if spread_val is not None else "—"
-    st.markdown(f"""
-    <div class='kpi-card'>
-        <div class='kpi-label'>ROIC − WACC</div>
-        <div class='kpi-value {sp_color}'>{sp_str}</div>
-        <div class='kpi-sub' style='margin-top:0.5rem;'>{badge}</div>
+with k4:
+    sc = clr(sp)
+    sp_str = pct(sp, sign=True)
+    bdg = f"<span class='badge-{'g' if is_vc else 'r'}'>{'Value Creator ✓' if is_vc else 'Value Destroyer ✗'}</span>"
+    st.markdown(f"""<div class="card">
+        <div class="card-label">ROIC − WACC Spread</div>
+        <div class="card-val {sc}">{sp_str}</div>
+        <div class="card-sub" style="margin-top:0.5rem">{bdg}</div>
     </div>""", unsafe_allow_html=True)
 
-st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
+st.markdown('<div style="height:1rem"></div>', unsafe_allow_html=True)
 
 left, right = st.columns([1, 1])
 
 with left:
-    # WACC breakdown table
-    st.markdown(f"""
-    <div class='card'>
-        <div style='font-size:1rem;font-weight:700;color:#1c1c1e;margin-bottom:1rem;letter-spacing:-0.01em;'>
-            WACC Components
+    st.markdown(f"""<div class="card">
+        <div style="font-size:0.95rem;font-weight:700;color:#1a2e3b;margin-bottom:1rem;">WACC Components</div>
+        <div class="drow"><span class="dkey">Risk-Free Rate (Rf)</span><span class="dval">{pct(row['rf_pct'])}</span></div>
+        <div class="drow"><span class="dkey">Beta (β)</span><span class="dval">{f"{row['beta']:.3f}" if pd.notna(row['beta']) else '—'}</span></div>
+        <div class="drow"><span class="dkey">Equity Risk Premium</span><span class="dval">{pct(row['erp_pct'])}</span></div>
+        <div class="drow"><span class="dkey">Cost of Equity (Ke)</span><span class="dval blue">{pct(row['ke_pct'])}</span></div>
+        <div class="drow"><span class="dkey">Credit Rating</span><span class="dval">{row['rating'] if pd.notna(row['rating']) else '—'}</span></div>
+        <div class="drow"><span class="dkey">Spread</span><span class="dval">{pct(row['spread_pct'])}</span></div>
+        <div class="drow"><span class="dkey">Kd after-tax</span><span class="dval red">{pct(row['kd_aftertax_pct'])}</span></div>
+        <div class="drow"><span class="dkey">Equity Weight (E/V)</span><span class="dval">{pct(row['equity_weight_pct'])}</span></div>
+        <div class="drow"><span class="dkey">Debt Weight (D/V)</span><span class="dval">{pct(row['debt_weight_pct'])}</span></div>
+        <div class="drow" style="border-top:2px solid #dde3ec;margin-top:0.3rem;padding-top:0.8rem;">
+            <span style="font-weight:700;color:#1a2e3b;font-size:0.95rem;">WACC</span>
+            <span style="font-weight:800;font-size:1.15rem;color:#0075c9;">{pct(row['wacc_pct'])}</span>
         </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Risk-Free Rate (Rf)</span>
-            <span class='detail-val'>{fmt_pct(row["rf_pct"])}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Beta (β)</span>
-            <span class='detail-val'>{f"{row['beta']:.3f}" if pd.notna(row["beta"]) else "—"}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Equity Risk Premium</span>
-            <span class='detail-val'>{fmt_pct(row["erp_pct"])}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Cost of Equity (Ke)</span>
-            <span class='detail-val' style='color:#007aff;'>{fmt_pct(row["ke_pct"])}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Credit Rating</span>
-            <span class='detail-val'>{row["rating"] if pd.notna(row["rating"]) else "—"}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Spread</span>
-            <span class='detail-val'>{fmt_pct(row["spread_pct"])}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Kd after-tax</span>
-            <span class='detail-val'>{fmt_pct(row["kd_aftertax_pct"])}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Equity Weight (E/V)</span>
-            <span class='detail-val'>{fmt_pct(row["equity_weight_pct"])}</span>
-        </div>
-        <div class='detail-row'>
-            <span class='detail-key'>Debt Weight (D/V)</span>
-            <span class='detail-val'>{fmt_pct(row["debt_weight_pct"])}</span>
-        </div>
-        <div class='detail-row' style='border-top:2px solid #e5e5ea;margin-top:0.3rem;padding-top:0.8rem;'>
-            <span style='font-weight:700;color:#1c1c1e;'>WACC</span>
-            <span style='font-weight:800;font-size:1.1rem;color:#007aff;'>{fmt_pct(row["wacc_pct"])}</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    </div>""", unsafe_allow_html=True)
 
 with right:
-    # 3-year FCFF chart
-    years = [2023, 2024, 2025]
-    fcff_vals = [row["fcff_2023_m"], row["fcff_2024_m"], row["fcff_2025_m"]]
-    bar_colors = ["#34c759" if v > 0 else "#ff3b30" for v in fcff_vals]
+    # FCFF bar chart
+    yrs = [2023, 2024, 2025]
+    vals = [row["fcff_2023_m"], row["fcff_2024_m"], row["fcff_2025_m"]]
+    bcolors = ["#28a745" if v > 0 else "#dc3545" for v in vals]
 
-    fig = go.Figure()
-    fig.add_trace(go.Bar(
-        x=years, y=fcff_vals,
-        marker_color=bar_colors,
-        marker_line_width=0,
-        text=[fmt_m(v) for v in fcff_vals],
+    fig1 = go.Figure(go.Bar(
+        x=yrs, y=vals,
+        marker_color=bcolors, marker_line_width=0,
+        text=[money(v) for v in vals],
         textposition="outside",
-        textfont=dict(size=11, color="#1c1c1e", family="Manrope"),
-        width=0.45,
+        textfont=dict(size=11, color="#1a2e3b", family="Inter"),
+        width=0.4,
     ))
-    fig.add_hline(y=0, line_color="#e5e5ea", line_width=1)
-    fig.update_layout(
-        title=dict(text=f"{selected_ticker} — 3-Year FCFF",
-                   font=dict(size=13, color="#1c1c1e", family="Manrope"), x=0),
-        paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
-        font=dict(family="Manrope", color="#8e8e93", size=11),
-        margin=dict(l=10, r=10, t=50, b=10),
-        yaxis=dict(gridcolor="#f2f2f7", tickformat=",.0f", zeroline=False,
-                   showgrid=True, tickfont=dict(size=10)),
-        xaxis=dict(tickvals=years, tickfont=dict(size=11, color="#1c1c1e")),
-        showlegend=False, height=220,
+    fig1.add_hline(y=0, line_color="#dde3ec", line_width=1)
+    fig1.update_layout(
+        title=dict(text=f"<b>{sel}</b> — 3-Year FCFF",
+                   font=dict(size=12, color="#1a2e3b", family="Inter"), x=0, xanchor="left"),
+        paper_bgcolor="#fff", plot_bgcolor="#fff",
+        font=dict(family="Inter", color="#8a9bb0", size=11),
+        margin=dict(l=8, r=8, t=45, b=8),
+        yaxis=dict(gridcolor="#f0f2f5", zeroline=False, tickformat=",.0f",
+                   tickfont=dict(size=10)),
+        xaxis=dict(tickvals=yrs, tickfont=dict(size=11, color="#1a2e3b")),
+        showlegend=False, height=230,
     )
-    st.markdown("<div class='card' style='padding:1rem;'>", unsafe_allow_html=True)
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.markdown('<div class="card" style="padding:1rem 1.2rem;">', unsafe_allow_html=True)
+    st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
 
+    st.markdown('<div style="height:0.8rem"></div>', unsafe_allow_html=True)
+
     # ROIC vs WACC
-    fig2 = go.Figure()
-    roic_v = row["roic_pct"] if pd.notna(row["roic_pct"]) else 0
-    wacc_v = row["wacc_pct"] if pd.notna(row["wacc_pct"]) else 0
-    fig2.add_trace(go.Bar(
-        x=["ROIC", "WACC"],
-        y=[roic_v, wacc_v],
-        marker_color=["#34c759" if roic_v > wacc_v else "#ff3b30", "#007aff"],
+    rv = row["roic_pct"] if pd.notna(row["roic_pct"]) else 0
+    wv = row["wacc_pct"] if pd.notna(row["wacc_pct"]) else 0
+    fig2 = go.Figure(go.Bar(
+        x=["ROIC", "WACC"], y=[rv, wv],
+        marker_color=["#28a745" if rv >= wv else "#dc3545", "#0075c9"],
         marker_line_width=0,
-        text=[fmt_pct(roic_v), fmt_pct(wacc_v)],
+        text=[pct(rv), pct(wv)],
         textposition="outside",
-        textfont=dict(size=12, color="#1c1c1e", family="Manrope"),
-        width=0.35,
+        textfont=dict(size=12, color="#1a2e3b", family="Inter"),
+        width=0.3,
     ))
     fig2.update_layout(
-        paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
-        font=dict(family="Manrope", color="#8e8e93", size=11),
-        margin=dict(l=10, r=10, t=10, b=10),
-        yaxis=dict(gridcolor="#f2f2f7", ticksuffix="%", zeroline=False,
+        paper_bgcolor="#fff", plot_bgcolor="#fff",
+        font=dict(family="Inter", color="#8a9bb0", size=11),
+        margin=dict(l=8, r=8, t=8, b=8),
+        yaxis=dict(gridcolor="#f0f2f5", ticksuffix="%", zeroline=False,
                    tickfont=dict(size=10)),
-        xaxis=dict(tickfont=dict(size=12, color="#1c1c1e", family="Manrope")),
-        showlegend=False, height=180,
+        xaxis=dict(tickfont=dict(size=12, color="#1a2e3b")),
+        showlegend=False, height=190,
     )
-    st.markdown("<div class='card' style='padding:1rem;margin-top:-0.5rem;'>", unsafe_allow_html=True)
+    st.markdown('<div class="card" style="padding:1rem 1.2rem;">', unsafe_allow_html=True)
     st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ── Computation Breakdown ─────────────────────────────────────────────────────
-with st.expander("View Full Computation Breakdown", expanded=False):
-    sections = breakdown_text.split("=" * 70)
-    company_section = ""
-    for section in sections:
-        if f"  {selected_ticker} —" in section:
-            company_section = ("=" * 70 + section).strip()
+# ── Breakdown ─────────────────────────────────────────────────────────────────
+st.markdown('<div style="height:1rem"></div>', unsafe_allow_html=True)
+with st.expander("📋 View Full Computation Breakdown"):
+    sections = txt.split("=" * 70)
+    found = ""
+    for s in sections:
+        if f"  {sel} —" in s:
+            found = ("=" * 70 + s).strip()
             break
-
-    if company_section:
-        st.markdown(f"<div class='breakdown-box'>{company_section}</div>",
-                    unsafe_allow_html=True)
+    if found:
+        st.markdown(f'<div class="bkdown">{found}</div>', unsafe_allow_html=True)
     else:
         st.info("Breakdown not available for this company.")
 
+st.markdown('</div>', unsafe_allow_html=True)  # close content-wrap
+
 # ── Footer ────────────────────────────────────────────────────────────────────
-st.markdown("---")
 st.markdown("""
-<div style='text-align:center;font-size:0.75rem;color:#8e8e93;font-weight:500;'>
+<div style='background:#1a3a4a;padding:1rem 2.5rem;margin-top:2rem;
+text-align:center;font-size:0.72rem;color:#7aa8bc;font-weight:400;'>
     PSE Valuation Dashboard &nbsp;·&nbsp;
     FCFF = NOPAT + D&A − ΔNWC − CapEx &nbsp;·&nbsp;
     ROIC = NOPAT / Avg IC &nbsp;·&nbsp;
-    WACC = (E/V)Ke + (D/V)Kd(1−t)
+    WACC = (E/V)Ke + (D/V)Kd(1−t) &nbsp;·&nbsp;
+    Data: Yahoo Finance & Reuters
 </div>
 """, unsafe_allow_html=True)
