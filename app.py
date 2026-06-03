@@ -30,6 +30,10 @@ html, body, [class*="css"] {
 .stApp { background: #f5f6fa; }
 .block-container { padding: 0 !important; max-width: 100% !important; }
 
+/* Force table white - override Streamlit dark theme */
+.stDataFrame, .stDataFrame > div, iframe { background: white !important; }
+div[data-testid="stDataFrame"] > div { background: white !important; }
+
 /* TOP NAV BAR */
 .topbar {
     background: linear-gradient(135deg, #1d3a4f 0%, #122535 100%);
@@ -338,21 +342,58 @@ if page == "Dashboard":
         "rating":"Rating","market_cap_b":"Mkt Cap (₱B)",
     })
 
-    styled = tbl.style.format({
-        "FCFF 2025 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
-        "FCFF 2024 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
-        "FCFF 2023 (₱M)": lambda v: f"{v:,.1f}" if pd.notna(v) else "—",
-        "ROIC (%)":       lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
-        "WACC (%)":       lambda v: f"{v:.2f}%" if pd.notna(v) else "—",
-        "Spread":         lambda v: f"{v:+.2f}%" if pd.notna(v) else "—",
-        "Mkt Cap (₱B)":  lambda v: f"{v:,.3f}" if pd.notna(v) else "—",
-    }).map(
-        lambda v: "color:#27ae60;font-weight:600" if isinstance(v,float) and pd.notna(v) and v > 0
-        else ("color:#e74c3c;font-weight:600" if isinstance(v,float) and pd.notna(v) and v < 0 else ""),
-        subset=["Spread"]
-    )
+    def fmt(v, typ):
+        if pd.isna(v) or v is None: return "—"
+        if typ == "m": return f"{v:,.1f}"
+        if typ == "pct": return f"{v:.2f}%"
+        if typ == "spct": return f"{v:+.2f}%"
+        if typ == "b": return f"{v:,.3f}"
+        return str(v)
 
-    st.dataframe(styled, use_container_width=True, height=380)
+    rows_html = ""
+    for i, r in tbl.iterrows():
+        sp_val = r["Spread"]
+        sp_color = "#27ae60" if pd.notna(sp_val) and sp_val > 0 else ("#e74c3c" if pd.notna(sp_val) and sp_val < 0 else "#1a2e3b")
+        bg = "#f7fbfd" if i % 2 == 0 else "#ffffff"
+        rows_html += f"""<tr style='background:{bg};'>
+            <td>{r['Ticker']}</td>
+            <td>{r['Company']}</td>
+            <td>{r['Sector']}</td>
+            <td style='text-align:right'>{fmt(r['FCFF 2025 (₱M)'],'m')}</td>
+            <td style='text-align:right'>{fmt(r['FCFF 2024 (₱M)'],'m')}</td>
+            <td style='text-align:right'>{fmt(r['FCFF 2023 (₱M)'],'m')}</td>
+            <td style='text-align:right'>{fmt(r['ROIC (%)'],'pct')}</td>
+            <td style='text-align:right'>{fmt(r['WACC (%)'],'pct')}</td>
+            <td>{r['Rating'] if pd.notna(r['Rating']) else '—'}</td>
+            <td style='text-align:right'>{fmt(r['Mkt Cap (₱B)'],'b')}</td>
+            <td style='text-align:right;color:{sp_color};font-weight:600'>{fmt(sp_val,'spct')}</td>
+        </tr>"""
+
+    table_html = f"""
+    <div style='overflow-x:auto;border-radius:14px;border:1px solid #b8d4e4;
+    box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-right:2rem;margin-bottom:1rem;'>
+    <table style='width:100%;border-collapse:collapse;background:#ffffff;font-family:Inter,sans-serif;font-size:0.88rem;'>
+        <thead>
+            <tr style='background:#eaf3f8;'>
+                <th style='padding:0.75rem 0.9rem;text-align:left;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>Ticker</th>
+                <th style='padding:0.75rem 0.9rem;text-align:left;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>Company</th>
+                <th style='padding:0.75rem 0.9rem;text-align:left;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>Sector</th>
+                <th style='padding:0.75rem 0.9rem;text-align:right;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>FCFF 2025 (₱M)</th>
+                <th style='padding:0.75rem 0.9rem;text-align:right;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>FCFF 2024 (₱M)</th>
+                <th style='padding:0.75rem 0.9rem;text-align:right;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>FCFF 2023 (₱M)</th>
+                <th style='padding:0.75rem 0.9rem;text-align:right;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>ROIC (%)</th>
+                <th style='padding:0.75rem 0.9rem;text-align:right;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>WACC (%)</th>
+                <th style='padding:0.75rem 0.9rem;text-align:left;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>Rating</th>
+                <th style='padding:0.75rem 0.9rem;text-align:right;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;border-right:1px solid #b8d4e4;'>Mkt Cap (₱B)</th>
+                <th style='padding:0.75rem 0.9rem;text-align:right;color:#2a6080;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid #b8d4e4;'>Spread</th>
+            </tr>
+        </thead>
+        <tbody style='color:#1a2e3b;'>
+            {rows_html}
+        </tbody>
+    </table>
+    </div>"""
+    st.markdown(table_html, unsafe_allow_html=True)
 
     st.markdown("<div style='margin-top:0.8rem'></div>", unsafe_allow_html=True)
     csv_data = fdf.to_csv(index=False).encode("utf-8")
@@ -506,7 +547,7 @@ else:
     if st.button("← Back to Dashboard"):
         st.session_state["page"] = "Dashboard"
         st.rerun()
-    st.markdown("<div style='max-width:780px;margin:0 auto;padding:2.5rem 3rem 4rem 3rem;'>", unsafe_allow_html=True)
+    st.markdown("<div style='max-width:780px;margin:0 3rem;padding:2.5rem 3rem 4rem 3rem;background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-top:1rem;'>", unsafe_allow_html=True)
     st.markdown("<div style='font-size:1.9rem;font-weight:800;color:#1a2e3b;letter-spacing:-0.03em;margin-bottom:0.5rem;line-height:1.2;'>About This Project</div>", unsafe_allow_html=True)
     st.markdown("<div style='font-size:1.05rem;color:#4a6070;line-height:1.75;margin-bottom:2.5rem;'>A free, open-access fundamental valuation dashboard for Philippine Stock Exchange-listed companies. Built for the everyday Filipino investor.</div>", unsafe_allow_html=True)
 
