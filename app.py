@@ -257,7 +257,6 @@ st.markdown("""
     <div class="topbar-left">
         <div>
             <div class="topbar-title">🇵🇭 PSE Valuation Dashboard</div>
-
         </div>
     </div>
 </div>
