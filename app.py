@@ -406,12 +406,14 @@ if page == "Dashboard":
 
     st.markdown("<div style='margin-top:0.8rem'></div>", unsafe_allow_html=True)
     csv_data = fdf.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        label="⬇  Export to CSV",
-        data=csv_data,
-        file_name=f"pse_valuation_{sel_sector.lower().replace(' ','_')}.csv",
-        mime="text/csv",
-    )
+    col_csv_left, col_csv_btn, col_csv_right = st.columns([3.2, 0.8, 0.5])
+    with col_csv_btn:
+        st.download_button(
+            label="⬇  Export to CSV",
+            data=csv_data,
+            file_name=f"pse_valuation_{sel_sector.lower().replace(' ','_')}.csv",
+            mime="text/csv",
+        )
 
     st.markdown('<div style="height:2.5rem"></div>', unsafe_allow_html=True)
     st.markdown('<div class="sec-label">Company Deep Dive</div>', unsafe_allow_html=True)
