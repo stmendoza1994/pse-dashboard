@@ -324,7 +324,6 @@ for col, label, val, color in [
         letter-spacing:-0.02em;'>{val}</div>
     </div>""", unsafe_allow_html=True)
 
-st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 st.markdown('<div class="content">', unsafe_allow_html=True)
 
 
