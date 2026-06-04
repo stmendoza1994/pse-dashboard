@@ -263,10 +263,12 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown("<div style='padding-left:3rem;'>", unsafe_allow_html=True)
 col_btn, col_btn_space = st.columns([1, 8])
 with col_btn:
     if st.button("ℹ About", use_container_width=True):
         st.session_state["page"] = "About"
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Filter row
 st.markdown('<div style="background:#ffffff;padding:0.8rem 1.5rem;border-radius:12px;border:1px solid #e2e6ed;margin-bottom:1rem;">', unsafe_allow_html=True)
