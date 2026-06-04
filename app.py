@@ -395,7 +395,7 @@ if page == "Dashboard":
         </tbody>
     </table>
     </div>"""
-    col_tbl, col_space = st.columns([3, 1])
+    col_space1, col_tbl, col_space2 = st.columns([0.5, 3, 0.5])
     with col_tbl:
         st.markdown(table_html, unsafe_allow_html=True)
 
