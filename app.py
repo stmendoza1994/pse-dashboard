@@ -44,7 +44,7 @@ div[data-testid="stDataFrame"] > div { background: white !important; }
     border-bottom: 1px solid #2a4f68;
 }
 .topbar-left { display: flex; align-items: center; gap: 2rem; }
-.topbar-title { font-size: 1.15rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; white-space: nowrap; }
+.topbar-title { font-size: 2.3rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; white-space: nowrap; }
 .topbar-sub { font-size: 0.75rem; color: #6a96ae; font-weight: 400; }
 .topbar-stats { display: flex; gap: 2.5rem; align-items: center; }
 .bstat-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6a96ae; margin-bottom: 0.2rem; }
