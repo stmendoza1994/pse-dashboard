@@ -82,7 +82,7 @@ div[data-testid="stDataFrame"] > div { background: white !important; }
 }
 
 /* CONTENT */
-.content { padding: 0rem 7rem 3.5rem 7rem; }
+.content { padding: 0rem 7rem 3.5rem 7rem; margin-top: -1rem; }
 
 /* SECTION LABEL */
 .sec-label {
