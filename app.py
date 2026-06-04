@@ -262,17 +262,17 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Filter row
-st.markdown('<div style="background:#ffffff;padding:0.8rem 1.5rem;border-radius:12px;border:1px solid #e2e6ed;margin-bottom:1rem;">', unsafe_allow_html=True)
-col_sector, col_vc, col_space, col_about = st.columns([2, 1.8, 4, 1])
-
-with col_about:
-    st.markdown("<div style='height:0.4rem'></div>", unsafe_allow_html=True)
+col_btn, col_btn_space = st.columns([1, 8])
+with col_btn:
     if st.button("ℹ About", use_container_width=True):
         st.session_state["page"] = "About"
-    if "page" not in st.session_state:
-        st.session_state["page"] = "Dashboard"
 
+# Filter row
+st.markdown('<div style="background:#ffffff;padding:0.8rem 1.5rem;border-radius:12px;border:1px solid #e2e6ed;margin-bottom:1rem;">', unsafe_allow_html=True)
+col_sector, col_vc, col_space = st.columns([2, 1.8, 5])
+
+if "page" not in st.session_state:
+    st.session_state["page"] = "Dashboard"
 page = st.session_state.get("page", "Dashboard")
 
 with col_sector:
