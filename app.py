@@ -270,7 +270,7 @@ with col_btn:
         st.session_state["page"] = "About"
 
 # Filter row
-col_filter_indent, col_sector, col_vc, col_space = st.columns([0.15, 1.5, 1.5, 1.85])
+col_filter_indent, col_sector, col_vc, col_space = st.columns([0.15, 0.75, 1.5, 2.6])
 
 if "page" not in st.session_state:
     st.session_state["page"] = "Dashboard"
