@@ -313,7 +313,7 @@ for col, label, val, color in [
     (s5, "Avg Spread", pct(avg_spread, sign=True), "#27ae60" if avg_spread and avg_spread > 0 else "#e74c3c"),
 ]:
     col.markdown(f"""
-    <div style='background:#fff;border-radius:12px;padding:1rem 1.4rem;
+    <div style='background:#fff;border-radius:12px;padding:1rem 1.4rem;text-align:center;
     box-shadow:0 1px 4px rgba(0,0,0,0.06);'>
         <div style='font-size:1.3rem;font-weight:700;letter-spacing:0.1em;
         text-transform:uppercase;color:#003d7a;margin-bottom:0.3rem;'>{label}</div>
