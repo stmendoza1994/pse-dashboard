@@ -304,6 +304,8 @@ avg_roic   = robust_mean(valid["roic_pct"])
 avg_wacc   = robust_mean(valid["wacc_pct"])
 avg_spread = (avg_roic - avg_wacc) if avg_roic is not None and avg_wacc is not None else None
 
+st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
 # Stats bar
 col_stats_indent, s1, s2, s3, s4, s5, col_stats_end = st.columns([1, 1, 1, 1, 1, 1, 1])
 for col, label, val, color in [
