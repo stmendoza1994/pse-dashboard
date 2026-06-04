@@ -269,8 +269,7 @@ with col_btn:
         st.session_state["page"] = "About"
 
 # Filter row
-st.markdown('<div style="background:#ffffff;padding:0.8rem 1.5rem;border-radius:12px;border:1px solid #e2e6ed;margin-bottom:1rem;">', unsafe_allow_html=True)
-col_sector, col_vc, col_space = st.columns([2, 1.8, 5])
+col_sector, col_vc, col_space = st.columns([2, 1.8, 1])
 
 if "page" not in st.session_state:
     st.session_state["page"] = "Dashboard"
@@ -307,7 +306,6 @@ avg_wacc   = robust_mean(valid["wacc_pct"])
 avg_spread = (avg_roic - avg_wacc) if avg_roic is not None and avg_wacc is not None else None
 
 st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
 
 # Stats bar
 s1, s2, s3, s4, s5 = st.columns(5)
