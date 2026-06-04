@@ -264,7 +264,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
-col_indent, col_about, col_sector, col_vc, col_space = st.columns([0.5, 0.8, 1.2, 1.2, 1.3])
+col_indent, col_about, col_sector, col_vc, col_space = st.columns([0.15, 0.8, 1.2, 1.2, 1.65])
 with col_about:
     st.markdown("<div style='height:0.35rem'></div>", unsafe_allow_html=True)
     if st.button("ℹ About", use_container_width=True):
