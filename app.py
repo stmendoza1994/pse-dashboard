@@ -283,7 +283,8 @@ with col_sector:
 
 with col_vc:
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
-    only_vc = st.toggle("Value creators only", value=False)
+    st.markdown("<p style='color:#1a2e3b;font-size:0.95rem;font-weight:600;margin-bottom:0;'>Value creators only</p>", unsafe_allow_html=True)
+    only_vc = st.toggle("", value=False)
     if only_vc != st.session_state.get("_last_vc", only_vc):
         st.session_state["page"] = "Dashboard"
     st.session_state["_last_vc"] = only_vc
