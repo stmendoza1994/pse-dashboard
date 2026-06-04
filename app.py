@@ -263,6 +263,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
 col_btn_indent, col_btn, col_btn_space = st.columns([0.15, 1, 7.85])
 with col_btn:
     if st.button("ℹ About", use_container_width=True):
