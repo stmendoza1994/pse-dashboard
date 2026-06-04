@@ -206,6 +206,8 @@ div[data-testid="stDataFrame"] > div { background: white !important; }
 .about-note { background: #fff8ed; border-radius: 10px; padding: 1rem 1.4rem; font-size: 0.88rem; color: #7a5c20; line-height: 1.65; margin-top: 2rem; border: 1px solid #f5dfa0; }
 
 [data-testid="stToggle"] label { color: #1a2e3b !important; font-size: 0.95rem !important; font-weight: 600 !important; }
+[data-testid="stToggle"] { background-color: #e2e6ed !important; border-radius: 20px !important; padding: 4px !important; }
+[data-testid="stToggle"] > div { background-color: #0066cc !important; }
 #MainMenu, footer, header { visibility: hidden; }
 .stDeployButton { display: none; }
 </style>
@@ -285,6 +287,7 @@ with col_vc:
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
     st.markdown("<p style='color:#1a2e3b;font-size:0.95rem;font-weight:600;margin-bottom:0;'>Value creators only</p>", unsafe_allow_html=True)
     only_vc = st.toggle("", value=False)
+
     if only_vc != st.session_state.get("_last_vc", only_vc):
         st.session_state["page"] = "Dashboard"
     st.session_state["_last_vc"] = only_vc
