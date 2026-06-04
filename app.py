@@ -285,6 +285,7 @@ with col_sector:
     st.session_state["_last_sector"] = sel_sector
 
 with col_vc:
+    st.markdown("<div style='height:0.6rem'></div>", unsafe_allow_html=True)
     only_vc = st.checkbox("Value creators only", value=False)
 
     if only_vc != st.session_state.get("_last_vc", only_vc):
