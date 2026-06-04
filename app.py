@@ -87,7 +87,7 @@ div[data-testid="stDataFrame"] > div { background: white !important; }
 /* SECTION LABEL */
 .sec-label {
     font-size: 1.08rem; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: none; color: #8a9faf;
+    text-transform: none; color: #0066cc;
     margin-bottom: 1.1rem; padding-bottom: 0.65rem;
     border-bottom: 1px solid #e2e6ed;
 }
