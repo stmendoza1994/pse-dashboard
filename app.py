@@ -318,7 +318,7 @@ for col, label, val, color in [
     col.markdown(f"""
     <div style='background:#ffffff;border-radius:8px;padding:0.5rem 0.7rem;text-align:center;border:1px solid #b8d4e4;
     box-shadow:0 1px 4px rgba(0,0,0,0.06);'>
-        <div style='font-size:1.3rem;font-weight:700;letter-spacing:0.1em;
+        <div style='font-size:1.08rem;font-weight:700;letter-spacing:0.1em;
         text-transform:uppercase;color:#003d7a;margin-bottom:0.3rem;'>{label}</div>
         <div style='font-size:1.08rem;font-weight:700;color:{color};
         letter-spacing:-0.02em;'>{val}</div>
