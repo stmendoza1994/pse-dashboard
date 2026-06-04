@@ -263,7 +263,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-col_btn_indent, col_btn, col_btn_space = st.columns([0.3, 1, 7.7])
+col_btn_indent, col_btn, col_btn_space = st.columns([0.15, 1, 7.85])
 with col_btn:
     if st.button("ℹ About", use_container_width=True):
         st.session_state["page"] = "About"
