@@ -257,7 +257,7 @@ st.markdown("""
     <div class="topbar-left">
         <div>
             <div class="topbar-title">🇵🇭 PSE Valuation Dashboard</div>
-            <div class="topbar-sub">FCFF · ROIC · WACC &nbsp;·&nbsp; Yahoo Finance & Reuters &nbsp;·&nbsp; Rf 7.706% · Tax 25% · ERP 6.69%</div>
+
         </div>
     </div>
 </div>
