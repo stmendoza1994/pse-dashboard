@@ -285,7 +285,7 @@ with col_sector:
     st.session_state["_last_sector"] = sel_sector
 
 with col_vc:
-    st.markdown("<div style='background:#1d3a4f;padding:0.5rem 1rem;border-radius:10px;display:inline-block;'><p style='color:#ffffff;font-size:0.95rem;font-weight:600;margin-bottom:0;'>Value creators only</p></div>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#1a2e3b;font-size:0.95rem;font-weight:600;margin-bottom:0;'>Value creators only</p>", unsafe_allow_html=True)
     only_vc = st.toggle("", value=False)
 
     if only_vc != st.session_state.get("_last_vc", only_vc):
