@@ -404,7 +404,7 @@ if page == "Dashboard":
     with col_tbl:
         st.markdown(table_html, unsafe_allow_html=True)
 
-    st.markdown("<div style='margin-top:0.27rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top:0rem'></div>", unsafe_allow_html=True)
     csv_data = fdf.to_csv(index=False).encode("utf-8")
     col_csv_left, col_csv_btn, col_csv_right = st.columns([3.45, 0.8, 0.25])
     with col_csv_btn:
