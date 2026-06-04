@@ -205,8 +205,9 @@ div[data-testid="stDataFrame"] > div { background: white !important; }
 .about-ul li b { color: #1a2e3b; }
 .about-note { background: #fff8ed; border-radius: 10px; padding: 1rem 1.4rem; font-size: 0.88rem; color: #7a5c20; line-height: 1.65; margin-top: 2rem; border: 1px solid #f5dfa0; }
 
-[data-testid="stCheckbox"] label { color: #1a2e3b !important; font-size: 0.95rem !important; font-weight: 600 !important; }
-[data-testid="stCheckbox"] input { accent-color: #0066cc !important; width: 1.2rem !important; height: 1.2rem !important; }
+[data-testid="stCheckbox"] { margin-top: 0.5rem !important; }
+[data-testid="stCheckbox"] label p { color: #1a2e3b !important; font-size: 1rem !important; font-weight: 700 !important; }
+[data-testid="stCheckbox"] input[type="checkbox"] { accent-color: #0066cc !important; width: 1.3rem !important; height: 1.3rem !important; }
 #MainMenu, footer, header { visibility: hidden; }
 .stDeployButton { display: none; }
 </style>
