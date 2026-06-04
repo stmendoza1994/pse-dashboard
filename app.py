@@ -333,7 +333,7 @@ st.markdown('<div class="content">', unsafe_allow_html=True)
 # ════════════════════════════════
 if page == "Dashboard":
 
-    st.markdown('<div class="sec-label">All Companies</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-label">Company List:</div>', unsafe_allow_html=True)
     col_tbl, col_tbl_space = st.columns([3, 1])
 
     tbl = fdf[["symbol","company","sector","fcff_2025_m","fcff_2024_m","fcff_2023_m",
