@@ -370,7 +370,7 @@ if page == "Dashboard":
         </tr>"""
 
     table_html = f"""
-    <div style='overflow-x:auto;overflow-y:auto;max-height:420px;border-radius:14px;border:1px solid #b8d4e4;
+    <div style='overflow-x:auto;overflow-y:auto;max-height:420px;max-width:75%;margin:0 auto;border-radius:14px;border:1px solid #b8d4e4;
     box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-right:2rem;margin-bottom:1rem;'>
     <table style='width:100%;border-collapse:collapse;background:#ffffff;font-family:Inter,sans-serif;font-size:0.88rem;'>
         <thead>
