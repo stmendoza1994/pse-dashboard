@@ -311,15 +311,15 @@ col_stats_indent, s1, s2, s3, s4, s5, col_stats_end = st.columns([1, 1, 1, 1, 1,
 for col, label, val, color in [
     (s1, "Companies", str(len(fdf)), "#1a2e3b"),
     (s2, "Value Creators", str(creators), "#27ae60"),
-    (s3, "Avg ROIC", pct(avg_roic), "#0066cc"),
-    (s4, "Avg WACC", pct(avg_wacc), "#1a2e3b"),
-    (s5, "Avg Spread", pct(avg_spread, sign=True), "#27ae60" if avg_spread and avg_spread > 0 else "#e74c3c"),
+    (s3, "Avg. ROIC", pct(avg_roic), "#0066cc"),
+    (s4, "Avg. WACC", pct(avg_wacc), "#1a2e3b"),
+    (s5, "Avg. Spread", pct(avg_spread, sign=True), "#27ae60" if avg_spread and avg_spread > 0 else "#e74c3c"),
 ]:
     col.markdown(f"""
     <div style='background:#ffffff;border-radius:8px;padding:0.5rem 0.7rem;text-align:center;border:1px solid #b8d4e4;
     box-shadow:0 1px 4px rgba(0,0,0,0.06);'>
         <div style='font-size:1.08rem;font-weight:700;letter-spacing:0.1em;
-        text-transform:uppercase;color:#003d7a;margin-bottom:0.3rem;'>{label}</div>
+        text-transform:none;color:#003d7a;margin-bottom:0.3rem;'>{label}</div>
         <div style='font-size:1.08rem;font-weight:700;color:{color};
         letter-spacing:-0.02em;'>{val}</div>
     </div>""", unsafe_allow_html=True)
