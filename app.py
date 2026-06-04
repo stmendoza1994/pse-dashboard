@@ -207,7 +207,7 @@ div[data-testid="stDataFrame"] > div { background: white !important; }
 
 [data-testid="stCheckbox"] { margin-top: 0.5rem !important; }
 [data-testid="stCheckbox"] label p { color: #1a2e3b !important; font-size: 1rem !important; font-weight: 700 !important; }
-[data-testid="stCheckbox"] input[type="checkbox"] { accent-color: #0066cc !important; width: 1.3rem !important; height: 1.3rem !important; }
+[data-testid="stCheckbox"] input[type="checkbox"] { accent-color: #9aa5b4 !important; width: 1.3rem !important; height: 1.3rem !important; }
 #MainMenu, footer, header { visibility: hidden; }
 .stDeployButton { display: none; }
 </style>
