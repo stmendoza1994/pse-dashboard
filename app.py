@@ -332,6 +332,7 @@ st.markdown('<div class="content">', unsafe_allow_html=True)
 if page == "Dashboard":
 
     st.markdown('<div class="sec-label">All Companies</div>', unsafe_allow_html=True)
+    col_tbl, col_tbl_space = st.columns([3, 1])
 
     tbl = fdf[["symbol","company","sector","fcff_2025_m","fcff_2024_m","fcff_2023_m",
                "roic_pct","wacc_pct","rating","market_cap_b"]].copy()
@@ -394,7 +395,9 @@ if page == "Dashboard":
         </tbody>
     </table>
     </div>"""
-    st.markdown(table_html, unsafe_allow_html=True)
+    col_tbl, col_space = st.columns([3, 1])
+    with col_tbl:
+        st.markdown(table_html, unsafe_allow_html=True)
 
     st.markdown("<div style='margin-top:0.8rem'></div>", unsafe_allow_html=True)
     csv_data = fdf.to_csv(index=False).encode("utf-8")
