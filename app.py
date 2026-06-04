@@ -406,7 +406,7 @@ if page == "Dashboard":
 
     st.markdown("<div style='margin-top:0.8rem'></div>", unsafe_allow_html=True)
     csv_data = fdf.to_csv(index=False).encode("utf-8")
-    col_csv_left, col_csv_btn, col_csv_right = st.columns([3.3, 0.8, 0.4])
+    col_csv_left, col_csv_btn, col_csv_right = st.columns([3.45, 0.8, 0.25])
     with col_csv_btn:
         st.download_button(
             label="⬇  Export to CSV",
